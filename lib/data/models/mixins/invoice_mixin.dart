@@ -313,8 +313,9 @@ abstract mixin class CalculateInvoiceTotal {
       final double qty = round(item.quantity, 5);
       final double cost = round(item.cost, 5);
       final double discount = round(item.discount, 5);
+      final double rentalDays = item.rentalDays > 0 ? item.rentalDays : 1;
 
-      double lineTotal = qty * cost;
+      double lineTotal = qty * cost * rentalDays;
 
       if (discount != 0) {
         if (isAmountDiscount) {
