@@ -165,6 +165,7 @@ abstract class InvoiceEntity extends Object
       statusId: kInvoiceStatusDraft,
       number: '',
       discount: 0,
+      defaultRentalDays: 0,
       taxAmount: 0,
       poNumber: '',
       projectId: '',
@@ -403,6 +404,9 @@ abstract class InvoiceEntity extends Object
 
   @override
   double get discount;
+
+  @BuiltValueField(wireName: 'default_rental_days')
+  double get defaultRentalDays;
 
   @BuiltValueField(wireName: 'po_number')
   String get poNumber;
@@ -1573,7 +1577,8 @@ abstract class InvoiceEntity extends Object
     ..taxData.replace(TaxDataEntity())
     //..eInvoice.replace(BuiltMap<String, dynamic>())
     ..subscriptionId = ''
-    ..locationId = '';
+    ..locationId = ''
+    ..defaultRentalDays = 0;
 
   static Serializer<InvoiceEntity> get serializer => _$invoiceEntitySerializer;
 }
