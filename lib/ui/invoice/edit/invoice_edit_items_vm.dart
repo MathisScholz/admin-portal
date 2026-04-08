@@ -122,7 +122,9 @@ class InvoiceEditItemsVM extends EntityEditItemsVM {
               ..typeId = isTasks
                   ? InvoiceItemEntity.TYPE_TASK
                   : InvoiceItemEntity.TYPE_STANDARD
-              ..rentalDays = (invoice!.defaultRentalDays > 0 ? invoice!.defaultRentalDays : 1))));
+              ..rentalDays = isTasks
+                  ? 1
+                  : (invoice!.defaultRentalDays > 0 ? invoice!.defaultRentalDays : 1))));
       },
       cloneLineItem: (int? index) {
         store.dispatch(

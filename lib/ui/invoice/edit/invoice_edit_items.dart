@@ -160,6 +160,7 @@ class ItemEditDetailsState extends State<ItemEditDetails> {
       _notesController,
       _costController,
       _productCostController,
+      _rentalDaysController,
       _qtyController,
       _discountController,
       _custom1Controller,
@@ -189,7 +190,6 @@ class ItemEditDetailsState extends State<ItemEditDetails> {
       controller.dispose();
     });
     _marginController.dispose();
-    _rentalDaysController.dispose();
 
     super.dispose();
   }
