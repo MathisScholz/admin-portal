@@ -427,7 +427,6 @@ class InvoiceEditDetailsState extends State<InvoiceEditDetails> {
               label: 'Miettage (Standard)',
               controller: _defaultRentalDaysController,
               keyboardType: TextInputType.numberWithOptions(decimal: true),
-              onSavePressed: viewModel.onSavePressed,
             ),
             if (invoice.isRecurringInvoice)
               AppDropdownButton<String>(
