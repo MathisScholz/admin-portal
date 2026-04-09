@@ -115,7 +115,10 @@ class QuoteEditItemsVM extends EntityEditItemsVM {
         store.dispatch(
           AddQuoteItem(
             index: index,
-            quoteItem: InvoiceItemEntity(),
+            quoteItem: InvoiceItemEntity().rebuild((b) => b
+              ..rentalDays = (quote?.defaultRentalDays ?? 0) > 0
+                  ? quote!.defaultRentalDays
+                  : 1),
           ),
         );
       },

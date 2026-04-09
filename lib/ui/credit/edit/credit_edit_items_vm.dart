@@ -113,7 +113,10 @@ class CreditEditItemsVM extends EntityEditItemsVM {
         store.dispatch(
           AddCreditItem(
             index: index,
-            creditItem: InvoiceItemEntity(),
+            creditItem: InvoiceItemEntity().rebuild((b) => b
+              ..rentalDays = (credit?.defaultRentalDays ?? 0) > 0
+                  ? credit!.defaultRentalDays
+                  : 1),
           ),
         );
       },
