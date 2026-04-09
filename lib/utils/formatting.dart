@@ -458,8 +458,11 @@ String formatDate(String? value, BuildContext? context,
     formattedValue = parsed == null ? '' : formatter.format(parsed.toLocal());
   } else {
     final dateFormats = state.staticState.dateFormatMap;
+    final dateFormatId = (company!.settings.dateFormatId ?? '').isNotEmpty
+        ? company!.settings.dateFormatId
+        : kDefaultDateFormat;
     final formatter = DateFormat(
-        dateFormats[company!.settings.dateFormatId]!.format,
+        dateFormats[dateFormatId]!.format,
         localeSelector(state));
     final parsed = DateTime.tryParse(value);
     formattedValue = parsed == null ? '' : formatter.format(parsed);
