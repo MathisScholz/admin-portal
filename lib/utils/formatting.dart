@@ -388,7 +388,8 @@ String parseDate(String value, BuildContext context) {
       ? company.settings.dateFormatId
       : kDefaultDateFormat;
 
-  final format = dateFormats[dateFormatId]!.format;
+  final format = dateFormats[dateFormatId]?.format;
+  if (format == null) return value;
   final formatter = DateFormat(format, localeSelector(state));
 
   return convertDateTimeToSqlDate(formatter.parse(value));
@@ -443,7 +444,7 @@ String formatDate(String? value, BuildContext? context,
       final dateFormatId = (company!.settings.dateFormatId ?? '').isNotEmpty
           ? company.settings.dateFormatId
           : kDefaultDateFormat;
-      format = dateFormats[dateFormatId]!.format;
+      format = dateFormats[dateFormatId]?.format ?? '';
       format += ' ' +
           (showSeconds
               ? company.settings.enableMilitaryTime!
@@ -462,7 +463,7 @@ String formatDate(String? value, BuildContext? context,
         ? company!.settings.dateFormatId
         : kDefaultDateFormat;
     final formatter = DateFormat(
-        dateFormats[dateFormatId]!.format,
+        dateFormats[dateFormatId]?.format ?? '',
         localeSelector(state));
     final parsed = DateTime.tryParse(value);
     formattedValue = parsed == null ? '' : formatter.format(parsed);
