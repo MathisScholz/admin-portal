@@ -165,6 +165,7 @@ abstract class InvoiceEntity extends Object
       statusId: kInvoiceStatusDraft,
       number: '',
       discount: 0,
+      defaultRentalDays: 0,
       taxAmount: 0,
       poNumber: '',
       projectId: '',
@@ -403,6 +404,9 @@ abstract class InvoiceEntity extends Object
 
   @override
   double get discount;
+
+  @BuiltValueField(wireName: 'default_rental_days')
+  double get defaultRentalDays;
 
   @BuiltValueField(wireName: 'po_number')
   String get poNumber;
@@ -1573,7 +1577,8 @@ abstract class InvoiceEntity extends Object
     ..taxData.replace(TaxDataEntity())
     //..eInvoice.replace(BuiltMap<String, dynamic>())
     ..subscriptionId = ''
-    ..locationId = '';
+    ..locationId = ''
+    ..defaultRentalDays = 0;
 
   static Serializer<InvoiceEntity> get serializer => _$invoiceEntitySerializer;
 }
@@ -1636,6 +1641,7 @@ abstract class InvoiceItemEntity
       notes: '',
       cost: 0,
       productCost: 0,
+      rentalDays: 1,
       quantity:
           (company.defaultQuantity || !company.enableProductQuantity) ? 1 : 0,
       taxName1: '',
@@ -1676,6 +1682,9 @@ abstract class InvoiceItemEntity
 
   @BuiltValueField(wireName: 'product_cost')
   double get productCost;
+
+  @BuiltValueField(wireName: 'rental_days')
+  double get rentalDays;
 
   double get quantity;
 
@@ -1729,7 +1738,8 @@ abstract class InvoiceItemEntity
       total(invoice, precision) - taxAmount(invoice, precision);
 
   double total(InvoiceEntity invoice, int precision) {
-    var total = quantity * cost;
+    final days = rentalDays > 0 ? rentalDays : 1;
+    var total = quantity * cost * days;
 
     if (discount != 0) {
       if (invoice.isAmountDiscount) {
@@ -1848,9 +1858,17 @@ abstract class InvoiceItemEntity
     return item;
   }
 
+  double get margin => cost > 0 ? (cost - productCost) / cost * 100 : 0;
+
+  static double calcEK(double vk, double margin) => vk * (1 - margin / 100);
+
+  static double calcVK(double ek, double margin) =>
+      margin < 100 ? ek / (1 - margin / 100) : 0;
+
   // ignore: unused_element
   static void _initializeBuilder(InvoiceItemEntityBuilder builder) => builder
     ..productCost = 0
+    ..rentalDays = 1
     ..taxCategoryId = '';
 
   static Serializer<InvoiceItemEntity> get serializer =>

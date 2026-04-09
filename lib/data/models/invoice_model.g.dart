@@ -159,6 +159,9 @@ class _$InvoiceEntitySerializer implements StructuredSerializer<InvoiceEntity> {
       'discount',
       serializers.serialize(object.discount,
           specifiedType: const FullType(double)),
+      'default_rental_days',
+      serializers.serialize(object.defaultRentalDays,
+          specifiedType: const FullType(double)),
       'po_number',
       serializers.serialize(object.poNumber,
           specifiedType: const FullType(String)),
@@ -493,6 +496,10 @@ class _$InvoiceEntitySerializer implements StructuredSerializer<InvoiceEntity> {
           result.discount = serializers.deserialize(value,
               specifiedType: const FullType(double))! as double;
           break;
+        case 'default_rental_days':
+          result.defaultRentalDays = serializers.deserialize(value,
+              specifiedType: const FullType(double))! as double;
+          break;
         case 'po_number':
           result.poNumber = serializers.deserialize(value,
               specifiedType: const FullType(String))! as String;
@@ -784,6 +791,9 @@ class _$InvoiceItemEntitySerializer
       'product_cost',
       serializers.serialize(object.productCost,
           specifiedType: const FullType(double)),
+      'rental_days',
+      serializers.serialize(object.rentalDays,
+          specifiedType: const FullType(double)),
       'quantity',
       serializers.serialize(object.quantity,
           specifiedType: const FullType(double)),
@@ -881,6 +891,10 @@ class _$InvoiceItemEntitySerializer
           break;
         case 'product_cost':
           result.productCost = serializers.deserialize(value,
+              specifiedType: const FullType(double))! as double;
+          break;
+        case 'rental_days':
+          result.rentalDays = serializers.deserialize(value,
               specifiedType: const FullType(double))! as double;
           break;
         case 'quantity':
@@ -1483,6 +1497,8 @@ class _$InvoiceEntity extends InvoiceEntity {
   @override
   final double discount;
   @override
+  final double defaultRentalDays;
+  @override
   final String poNumber;
   @override
   final String date;
@@ -1629,6 +1645,7 @@ class _$InvoiceEntity extends InvoiceEntity {
       required this.statusId,
       required this.number,
       required this.discount,
+      required this.defaultRentalDays,
       required this.poNumber,
       required this.date,
       required this.dueDate,
@@ -1718,6 +1735,7 @@ class _$InvoiceEntity extends InvoiceEntity {
         statusId == other.statusId &&
         number == other.number &&
         discount == other.discount &&
+        defaultRentalDays == other.defaultRentalDays &&
         poNumber == other.poNumber &&
         date == other.date &&
         dueDate == other.dueDate &&
@@ -1800,6 +1818,7 @@ class _$InvoiceEntity extends InvoiceEntity {
     _$hash = $jc(_$hash, statusId.hashCode);
     _$hash = $jc(_$hash, number.hashCode);
     _$hash = $jc(_$hash, discount.hashCode);
+    _$hash = $jc(_$hash, defaultRentalDays.hashCode);
     _$hash = $jc(_$hash, poNumber.hashCode);
     _$hash = $jc(_$hash, date.hashCode);
     _$hash = $jc(_$hash, dueDate.hashCode);
@@ -1882,6 +1901,7 @@ class _$InvoiceEntity extends InvoiceEntity {
           ..add('statusId', statusId)
           ..add('number', number)
           ..add('discount', discount)
+          ..add('defaultRentalDays', defaultRentalDays)
           ..add('poNumber', poNumber)
           ..add('date', date)
           ..add('dueDate', dueDate)
@@ -2004,6 +2024,11 @@ class InvoiceEntityBuilder
   double? _discount;
   double? get discount => _$this._discount;
   set discount(double? discount) => _$this._discount = discount;
+
+  double? _defaultRentalDays;
+  double? get defaultRentalDays => _$this._defaultRentalDays;
+  set defaultRentalDays(double? defaultRentalDays) =>
+      _$this._defaultRentalDays = defaultRentalDays;
 
   String? _poNumber;
   String? get poNumber => _$this._poNumber;
@@ -2313,6 +2338,7 @@ class InvoiceEntityBuilder
       _statusId = $v.statusId;
       _number = $v.number;
       _discount = $v.discount;
+      _defaultRentalDays = $v.defaultRentalDays;
       _poNumber = $v.poNumber;
       _date = $v.date;
       _dueDate = $v.dueDate;
@@ -2424,6 +2450,8 @@ class InvoiceEntityBuilder
                 number, r'InvoiceEntity', 'number'),
             discount: BuiltValueNullFieldError.checkNotNull(
                 discount, r'InvoiceEntity', 'discount'),
+            defaultRentalDays: BuiltValueNullFieldError.checkNotNull(
+                defaultRentalDays, r'InvoiceEntity', 'defaultRentalDays'),
             poNumber: BuiltValueNullFieldError.checkNotNull(
                 poNumber, r'InvoiceEntity', 'poNumber'),
             date: BuiltValueNullFieldError.checkNotNull(
@@ -2569,6 +2597,8 @@ class _$InvoiceItemEntity extends InvoiceItemEntity {
   @override
   final double productCost;
   @override
+  final double rentalDays;
+  @override
   final double quantity;
   @override
   final String taxName1;
@@ -2612,6 +2642,7 @@ class _$InvoiceItemEntity extends InvoiceItemEntity {
       required this.notes,
       required this.cost,
       required this.productCost,
+      required this.rentalDays,
       required this.quantity,
       required this.taxName1,
       required this.taxRate1,
@@ -2646,6 +2677,7 @@ class _$InvoiceItemEntity extends InvoiceItemEntity {
         notes == other.notes &&
         cost == other.cost &&
         productCost == other.productCost &&
+        rentalDays == other.rentalDays &&
         quantity == other.quantity &&
         taxName1 == other.taxName1 &&
         taxRate1 == other.taxRate1 &&
@@ -2674,6 +2706,7 @@ class _$InvoiceItemEntity extends InvoiceItemEntity {
     _$hash = $jc(_$hash, notes.hashCode);
     _$hash = $jc(_$hash, cost.hashCode);
     _$hash = $jc(_$hash, productCost.hashCode);
+    _$hash = $jc(_$hash, rentalDays.hashCode);
     _$hash = $jc(_$hash, quantity.hashCode);
     _$hash = $jc(_$hash, taxName1.hashCode);
     _$hash = $jc(_$hash, taxRate1.hashCode);
@@ -2702,6 +2735,7 @@ class _$InvoiceItemEntity extends InvoiceItemEntity {
           ..add('notes', notes)
           ..add('cost', cost)
           ..add('productCost', productCost)
+          ..add('rentalDays', rentalDays)
           ..add('quantity', quantity)
           ..add('taxName1', taxName1)
           ..add('taxRate1', taxRate1)
@@ -2742,6 +2776,10 @@ class InvoiceItemEntityBuilder
   double? _productCost;
   double? get productCost => _$this._productCost;
   set productCost(double? productCost) => _$this._productCost = productCost;
+
+  double? _rentalDays;
+  double? get rentalDays => _$this._rentalDays;
+  set rentalDays(double? rentalDays) => _$this._rentalDays = rentalDays;
 
   double? _quantity;
   double? get quantity => _$this._quantity;
@@ -2823,6 +2861,7 @@ class InvoiceItemEntityBuilder
       _notes = $v.notes;
       _cost = $v.cost;
       _productCost = $v.productCost;
+      _rentalDays = $v.rentalDays;
       _quantity = $v.quantity;
       _taxName1 = $v.taxName1;
       _taxRate1 = $v.taxRate1;
@@ -2869,6 +2908,8 @@ class InvoiceItemEntityBuilder
               cost, r'InvoiceItemEntity', 'cost'),
           productCost: BuiltValueNullFieldError.checkNotNull(
               productCost, r'InvoiceItemEntity', 'productCost'),
+          rentalDays: BuiltValueNullFieldError.checkNotNull(
+              rentalDays, r'InvoiceItemEntity', 'rentalDays'),
           quantity: BuiltValueNullFieldError.checkNotNull(
               quantity, r'InvoiceItemEntity', 'quantity'),
           taxName1: BuiltValueNullFieldError.checkNotNull(

@@ -140,7 +140,8 @@ abstract mixin class CalculateInvoiceTotal {
     double total = 0;
 
     lineItems.forEach((invoiceItem) {
-      double lineTotal = invoiceItem.quantity * invoiceItem.cost;
+      final rentalDays = invoiceItem.rentalDays > 0 ? invoiceItem.rentalDays : 1;
+      double lineTotal = invoiceItem.quantity * invoiceItem.cost * rentalDays;
 
       if (invoiceItem.discount != 0) {
         if (isAmountDiscount) {
@@ -183,7 +184,8 @@ abstract mixin class CalculateInvoiceTotal {
     final double qty = round(item.quantity, 5);
     final double cost = round(item.cost, 5);
     final double itemDiscount = round(item.discount, 5);
-    double lineTotal = qty * cost;
+    final double rentalDays = item.rentalDays > 0 ? item.rentalDays : 1;
+    double lineTotal = qty * cost * rentalDays;
 
     if (discount != 0) {
       if (isAmountDiscount) {
@@ -219,7 +221,8 @@ abstract mixin class CalculateInvoiceTotal {
       final double taxRate1 = round(item.taxRate1, 3);
       final double taxRate2 = round(item.taxRate2, 3);
       final double taxRate3 = round(item.taxRate3, 3);
-      double lineTotal = qty * cost;
+      final double rentalDays = item.rentalDays > 0 ? item.rentalDays : 1;
+      double lineTotal = qty * cost * rentalDays;
 
       if (discount != 0) {
         if (isAmountDiscount) {
@@ -310,8 +313,9 @@ abstract mixin class CalculateInvoiceTotal {
       final double qty = round(item.quantity, 5);
       final double cost = round(item.cost, 5);
       final double discount = round(item.discount, 5);
+      final double rentalDays = item.rentalDays > 0 ? item.rentalDays : 1;
 
-      double lineTotal = qty * cost;
+      double lineTotal = qty * cost * rentalDays;
 
       if (discount != 0) {
         if (isAmountDiscount) {
