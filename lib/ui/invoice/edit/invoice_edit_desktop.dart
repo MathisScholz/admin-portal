@@ -91,6 +91,7 @@ class InvoiceEditDesktopState extends State<InvoiceEditDesktop>
   final _invoiceNumberController = TextEditingController();
   final _poNumberController = TextEditingController();
   final _discountController = TextEditingController();
+  final _defaultRentalDaysController = TextEditingController();
   final _partialController = TextEditingController();
   final _custom1Controller = TextEditingController();
   final _custom2Controller = TextEditingController();
@@ -136,6 +137,7 @@ class InvoiceEditDesktopState extends State<InvoiceEditDesktop>
       _invoiceNumberController,
       _poNumberController,
       _discountController,
+      _defaultRentalDaysController,
       _partialController,
       _custom1Controller,
       _custom2Controller,
@@ -159,6 +161,11 @@ class InvoiceEditDesktopState extends State<InvoiceEditDesktop>
     _poNumberController.text = invoice.poNumber;
     _discountController.text = formatNumber(invoice.discount, context,
         formatNumberType: FormatNumberType.inputMoney)!;
+    _defaultRentalDaysController.text = invoice.defaultRentalDays > 0
+        ? formatNumber(invoice.defaultRentalDays, context,
+                formatNumberType: FormatNumberType.inputAmount) ??
+            ''
+        : '';
     _partialController.text = formatNumber(invoice.partial, context,
         formatNumberType: FormatNumberType.inputMoney)!;
     _custom1Controller.text = invoice.customValue1;
@@ -202,6 +209,7 @@ class InvoiceEditDesktopState extends State<InvoiceEditDesktop>
       ..number = _invoiceNumberController.text.trim()
       ..poNumber = _poNumberController.text.trim()
       ..discount = parseDouble(_discountController.text)
+      ..defaultRentalDays = parseDouble(_defaultRentalDaysController.text) ?? 0
       ..partial = parseDouble(_partialController.text)
       ..customValue1 = _custom1Controller.text.trim()
       ..customValue2 = _custom2Controller.text.trim()
@@ -625,6 +633,13 @@ class InvoiceEditDesktopState extends State<InvoiceEditDesktop>
                             onTypeChanged: (value) => viewModel.onChanged!(
                                 invoice.rebuild(
                                     (b) => b..isAmountDiscount = value)),
+                          ),
+                          DecoratedFormField(
+                            label: 'Miettage (Standard)',
+                            controller: _defaultRentalDaysController,
+                            keyboardType:
+                                TextInputType.numberWithOptions(decimal: true),
+                            onSavePressed: _onSavePressed,
                           ),
                           if (entityType == EntityType.recurringInvoice)
                             AppDropdownButton<String>(

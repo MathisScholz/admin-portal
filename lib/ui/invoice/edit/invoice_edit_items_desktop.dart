@@ -62,6 +62,7 @@ class _InvoiceEditItemsDesktopState extends State<InvoiceEditItemsDesktop> {
   static const COLUMN_DISCOUNT = 'discount';
   static const COLUMN_PRODUCT_COST = 'product_cost';
   static const COLUMN_MARGIN = 'margin';
+  static const COLUMN_RENTAL_DAYS = 'rental_days';
 
   final _debouncer = Debouncer();
   TextEditingController? _textEditingController;
@@ -239,8 +240,9 @@ class _InvoiceEditItemsDesktopState extends State<InvoiceEditItemsDesktop> {
     if (!widget.isTasks) {
       final unitCostIndex = _columns.indexOf(COLUMN_UNIT_COST);
       if (unitCostIndex >= 0) {
-        _columns.insert(unitCostIndex + 1, COLUMN_PRODUCT_COST);
-        _columns.insert(unitCostIndex + 2, COLUMN_MARGIN);
+        _columns.insert(unitCostIndex + 1, COLUMN_RENTAL_DAYS);
+        _columns.insert(unitCostIndex + 2, COLUMN_PRODUCT_COST);
+        _columns.insert(unitCostIndex + 3, COLUMN_MARGIN);
       }
     }
   }
@@ -388,6 +390,9 @@ class _InvoiceEditItemsDesktopState extends State<InvoiceEditItemsDesktop> {
         label = (translations!['discount'] ?? '').isNotEmpty
             ? translations['discount']!
             : localization!.discount;
+        isNumeric = true;
+      } else if (column == COLUMN_RENTAL_DAYS) {
+        label = 'Miettage';
         isNumeric = true;
       } else if (column == COLUMN_PRODUCT_COST) {
         label = 'EK';
@@ -537,6 +542,17 @@ class _InvoiceEditItemsDesktopState extends State<InvoiceEditItemsDesktop> {
                                     '',
                                 textAlign: TextAlign.right,
                               );
+                            } else if (column == COLUMN_RENTAL_DAYS) {
+                              return Text(
+                                formatNumber(
+                                      item.rentalDays,
+                                      context,
+                                      formatNumberType:
+                                          FormatNumberType.inputAmount,
+                                    ) ??
+                                    '',
+                                textAlign: TextAlign.right,
+                              );
                             } else if (column == COLUMN_PRODUCT_COST) {
                               return Text(
                                 formatNumber(
@@ -613,7 +629,10 @@ class _InvoiceEditItemsDesktopState extends State<InvoiceEditItemsDesktop> {
       );
     }
 
-    lineItems.add(InvoiceItemEntity());
+    lineItems.add(InvoiceItemEntity().rebuild((b) => b
+      ..rentalDays = !widget.isTasks && invoice.defaultRentalDays > 0
+          ? invoice.defaultRentalDays
+          : 1));
 
     tableHeaderColumns.addAll([
       TableHeader(
@@ -1201,6 +1220,35 @@ class _InvoiceEditItemsDesktopState extends State<InvoiceEditItemsDesktop> {
                               },
                               keyboardType: TextInputType.numberWithOptions(
                                   decimal: true, signed: true),
+                              onSavePressed:
+                                  widget.entityViewModel.onSavePressed,
+                            ),
+                          ),
+                        );
+                      } else if (column == COLUMN_RENTAL_DAYS) {
+                        return Focus(
+                          onFocusChange: (hasFocus) => _onFocusChange(),
+                          skipTraversal: true,
+                          child: Padding(
+                            padding:
+                                const EdgeInsets.only(right: kTableColumnGap),
+                            child: DecoratedFormField(
+                              key: ValueKey(
+                                  '__line_item_${index}_rental_days__'),
+                              textAlign: TextAlign.right,
+                              initialValue: formatNumber(
+                                lineItems[index].rentalDays,
+                                context,
+                                formatNumberType: FormatNumberType.inputAmount,
+                              ),
+                              onChanged: (value) => _onChanged(
+                                lineItems[index].rebuild((b) =>
+                                    b..rentalDays = parseDouble(value) ?? 1),
+                                index,
+                                debounce: false,
+                              ),
+                              keyboardType: TextInputType.numberWithOptions(
+                                  decimal: true),
                               onSavePressed:
                                   widget.entityViewModel.onSavePressed,
                             ),
