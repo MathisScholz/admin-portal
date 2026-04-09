@@ -303,6 +303,12 @@ class SettingsViewer extends StatelessWidget {
       localization.invoiceTerms: settings.defaultInvoiceTerms,
       localization.quoteTerms: settings.defaultQuoteTerms,
       localization.quoteFooter: settings.defaultQuoteFooter,
+      localization.lookup('order_confirmation_terms'):
+          settings.defaultOrderConfirmationTerms,
+      localization.lookup('order_confirmation_footer'):
+          settings.defaultOrderConfirmationFooter,
+      localization.lookup('order_confirmation_public_notes'):
+          settings.defaultOrderConfirmationPublicNotes,
       localization.creditTerms: settings.defaultCreditTerms,
       localization.creditFooter: settings.defaultCreditFooter,
       //localization.defaultInvoiceDesignId: settings.defaultInvoiceDesignId,

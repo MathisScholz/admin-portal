@@ -18,6 +18,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 // Project imports:
 import 'package:invoiceninja_flutter/data/models/models.dart';
+import 'package:invoiceninja_flutter/data/repositories/quote_repository.dart';
 import 'package:invoiceninja_flutter/redux/app/app_actions.dart';
 import 'package:invoiceninja_flutter/redux/app/app_state.dart';
 import 'package:invoiceninja_flutter/redux/design/design_selectors.dart';
@@ -40,6 +41,16 @@ class ViewQuoteList implements PersistUI {
   final int? page;
 }
 
+class ViewOrderConfirmationList implements PersistUI {
+  ViewOrderConfirmationList({
+    this.force = false,
+    this.page = 0,
+  });
+
+  final bool force;
+  final int? page;
+}
+
 class ViewQuote implements PersistUI, PersistPrefs {
   ViewQuote({
     this.quoteId,
@@ -50,11 +61,35 @@ class ViewQuote implements PersistUI, PersistPrefs {
   final bool force;
 }
 
+class ViewOrderConfirmation implements PersistUI, PersistPrefs {
+  ViewOrderConfirmation({
+    this.orderConfirmationId,
+    this.force = false,
+  });
+
+  final String? orderConfirmationId;
+  final bool force;
+}
+
 class EditQuote implements PersistUI, PersistPrefs {
   EditQuote(
       {this.quote, this.quoteItemIndex, this.completer, this.force = false});
 
   final InvoiceEntity? quote;
+  final int? quoteItemIndex;
+  final Completer? completer;
+  final bool force;
+}
+
+class EditOrderConfirmation implements PersistUI, PersistPrefs {
+  EditOrderConfirmation({
+    this.orderConfirmation,
+    this.quoteItemIndex,
+    this.completer,
+    this.force = false,
+  });
+
+  final InvoiceEntity? orderConfirmation;
   final int? quoteItemIndex;
   final Completer? completer;
   final bool force;
@@ -103,6 +138,13 @@ class LoadQuote {
 
 class LoadQuotes {
   LoadQuotes({this.completer, this.page = 1});
+
+  final Completer? completer;
+  final int page;
+}
+
+class LoadOrderConfirmations {
+  LoadOrderConfirmations({this.completer, this.page = 1});
 
   final Completer? completer;
   final int page;
@@ -533,7 +575,11 @@ Future handleQuoteAction(
 
   switch (action) {
     case EntityAction.edit:
-      editEntity(entity: quote);
+      if (quote.isOrderConfirmation) {
+        store.dispatch(EditOrderConfirmation(orderConfirmation: quote));
+      } else {
+        editEntity(entity: quote);
+      }
       break;
     case EntityAction.viewPdf:
       store.dispatch(ShowPdfQuote(quote: quote, context: context));
@@ -559,6 +605,33 @@ Future handleQuoteAction(
             store.dispatch(ConvertQuotesToProjects(
                 snackBarCompleter<Null>(localization.convertedQuote),
                 quoteIds));
+          });
+      break;
+    case EntityAction.createOrderConfirmation:
+      confirmCallback(
+          context: context,
+          message: localization.lookup(action.toString()),
+          callback: (_) async {
+            store.dispatch(StartLoading());
+
+            await const QuoteRepository()
+                .bulkAction(store.state.credentials, quoteIds, action)
+                .then((quotes) {
+              store.dispatch(StopLoading());
+              store.dispatch(RefreshData());
+
+              if (quotes.isNotEmpty) {
+                if (quotes.first.isOrderConfirmation) {
+                  store.dispatch(
+                      EditOrderConfirmation(orderConfirmation: quotes.first));
+                } else {
+                  editEntity(entity: quotes.first);
+                }
+              }
+            }).catchError((error) {
+              store.dispatch(StopLoading());
+              showErrorDialog(message: error);
+            });
           });
       break;
     case EntityAction.approve:
@@ -603,7 +676,9 @@ Future handleQuoteAction(
       }
       if (action == EntityAction.sendEmail) {
         store.dispatch(ShowEmailQuote(
-            completer: snackBarCompleter<Null>(localization!.emailedQuote),
+            completer: snackBarCompleter<Null>(quote.isOrderConfirmation
+                ? localization.lookup('emailed_order_confirmation')
+                : localization!.emailedQuote),
             quote: quote,
             context: context));
       } else if (action == EntityAction.schedule) {

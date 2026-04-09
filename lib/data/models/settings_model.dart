@@ -24,6 +24,10 @@ abstract class SettingsEntity
       defaultQuoteDesignId: clientSettings?.defaultQuoteDesignId ??
           groupSettings?.defaultQuoteDesignId ??
           companySettings?.defaultQuoteDesignId,
+      defaultOrderConfirmationDesignId:
+          clientSettings?.defaultOrderConfirmationDesignId ??
+              groupSettings?.defaultOrderConfirmationDesignId ??
+              companySettings?.defaultOrderConfirmationDesignId,
       defaultCreditDesignId: clientSettings?.defaultCreditDesignId ??
           groupSettings?.defaultCreditDesignId ??
           companySettings?.defaultCreditDesignId,
@@ -58,6 +62,18 @@ abstract class SettingsEntity
       defaultQuoteFooter: clientSettings?.defaultQuoteFooter ??
           groupSettings?.defaultQuoteFooter ??
           companySettings?.defaultQuoteFooter,
+      defaultOrderConfirmationTerms:
+          clientSettings?.defaultOrderConfirmationTerms ??
+              groupSettings?.defaultOrderConfirmationTerms ??
+              companySettings?.defaultOrderConfirmationTerms,
+      defaultOrderConfirmationFooter:
+          clientSettings?.defaultOrderConfirmationFooter ??
+              groupSettings?.defaultOrderConfirmationFooter ??
+              companySettings?.defaultOrderConfirmationFooter,
+      defaultOrderConfirmationPublicNotes:
+          clientSettings?.defaultOrderConfirmationPublicNotes ??
+              groupSettings?.defaultOrderConfirmationPublicNotes ??
+              companySettings?.defaultOrderConfirmationPublicNotes,
       defaultCreditTerms: clientSettings?.defaultCreditTerms ??
           groupSettings?.defaultCreditTerms ??
           companySettings?.defaultCreditTerms,
@@ -110,6 +126,10 @@ abstract class SettingsEntity
       autoBillStandardInvoices: clientSettings?.autoBillStandardInvoices ??
           groupSettings?.autoBillStandardInvoices ??
           companySettings?.autoBillStandardInvoices,
+      autoCreateOrderConfirmation:
+          clientSettings?.autoCreateOrderConfirmation ??
+              groupSettings?.autoCreateOrderConfirmation ??
+              companySettings?.autoCreateOrderConfirmation,
     );
   }
 
@@ -275,6 +295,9 @@ abstract class SettingsEntity
   @BuiltValueField(wireName: 'auto_convert_quote')
   bool? get autoConvertQuote;
 
+  @BuiltValueField(wireName: 'auto_create_order_confirmation')
+  bool? get autoCreateOrderConfirmation;
+
   @BuiltValueField(wireName: 'inclusive_taxes')
   bool? get enableInclusiveTaxes;
 
@@ -379,6 +402,15 @@ abstract class SettingsEntity
   @BuiltValueField(wireName: 'quote_footer')
   String? get defaultQuoteFooter;
 
+  @BuiltValueField(wireName: 'order_confirmation_terms')
+  String? get defaultOrderConfirmationTerms;
+
+  @BuiltValueField(wireName: 'order_confirmation_footer')
+  String? get defaultOrderConfirmationFooter;
+
+  @BuiltValueField(wireName: 'order_confirmation_public_notes')
+  String? get defaultOrderConfirmationPublicNotes;
+
   @BuiltValueField(wireName: 'credit_terms')
   String? get defaultCreditTerms;
 
@@ -390,6 +422,9 @@ abstract class SettingsEntity
 
   @BuiltValueField(wireName: 'quote_design_id')
   String? get defaultQuoteDesignId;
+
+  @BuiltValueField(wireName: 'order_confirmation_design_id')
+  String? get defaultOrderConfirmationDesignId;
 
   @BuiltValueField(wireName: 'credit_design_id')
   String? get defaultCreditDesignId;
@@ -442,6 +477,9 @@ abstract class SettingsEntity
   @BuiltValueField(wireName: 'email_subject_quote')
   String? get emailSubjectQuote;
 
+  @BuiltValueField(wireName: 'email_subject_order_confirmation')
+  String? get emailSubjectOrderConfirmation;
+
   @BuiltValueField(wireName: 'email_subject_credit')
   String? get emailSubjectCredit;
 
@@ -456,6 +494,9 @@ abstract class SettingsEntity
 
   @BuiltValueField(wireName: 'email_template_quote')
   String? get emailBodyQuote;
+
+  @BuiltValueField(wireName: 'email_template_order_confirmation')
+  String? get emailBodyOrderConfirmation;
 
   @BuiltValueField(wireName: 'email_template_credit')
   String? get emailBodyCredit;
@@ -993,6 +1034,8 @@ abstract class SettingsEntity
         return emailSubjectInvoice;
       case EmailTemplate.quote:
         return emailSubjectQuote;
+      case EmailTemplate.order_confirmation:
+        return emailSubjectOrderConfirmation;
       case EmailTemplate.credit:
         return emailSubjectCredit;
       case EmailTemplate.payment:
@@ -1032,6 +1075,8 @@ abstract class SettingsEntity
         return emailBodyInvoice;
       case EmailTemplate.quote:
         return emailBodyQuote;
+      case EmailTemplate.order_confirmation:
+        return emailBodyOrderConfirmation;
       case EmailTemplate.credit:
         return emailBodyCredit;
       case EmailTemplate.payment:

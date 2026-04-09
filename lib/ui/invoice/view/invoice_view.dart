@@ -136,6 +136,7 @@ class _InvoiceViewState extends State<InvoiceView>
     return ViewScaffold(
       isFilter: widget.isFilter,
       entity: invoice,
+      onEditPressed: (context) => viewModel.onEditPressed!(context),
       appBarBottom: TabBar(
         controller: _controller,
         isScrollable: true,

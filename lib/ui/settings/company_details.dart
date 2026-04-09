@@ -73,6 +73,9 @@ class _CompanyDetailsState extends State<CompanyDetails>
   final _invoiceFooterController = TextEditingController();
   final _quoteTermsController = TextEditingController();
   final _quoteFooterController = TextEditingController();
+  final _orderConfirmationTermsController = TextEditingController();
+  final _orderConfirmationFooterController = TextEditingController();
+  final _orderConfirmationPublicNotesController = TextEditingController();
   final _creditTermsController = TextEditingController();
   final _creditFooterController = TextEditingController();
   final _purchaseOrderTermsController = TextEditingController();
@@ -123,6 +126,9 @@ class _CompanyDetailsState extends State<CompanyDetails>
       _invoiceTermsController,
       _quoteFooterController,
       _quoteTermsController,
+      _orderConfirmationFooterController,
+      _orderConfirmationTermsController,
+      _orderConfirmationPublicNotesController,
       _creditFooterController,
       _creditTermsController,
       _purchaseOrderFooterController,
@@ -156,6 +162,12 @@ class _CompanyDetailsState extends State<CompanyDetails>
     _invoiceFooterController.text = settings.defaultInvoiceFooter ?? '';
     _quoteTermsController.text = settings.defaultQuoteTerms ?? '';
     _quoteFooterController.text = settings.defaultQuoteFooter ?? '';
+    _orderConfirmationTermsController.text =
+        settings.defaultOrderConfirmationTerms ?? '';
+    _orderConfirmationFooterController.text =
+        settings.defaultOrderConfirmationFooter ?? '';
+    _orderConfirmationPublicNotesController.text =
+        settings.defaultOrderConfirmationPublicNotes ?? '';
     _creditFooterController.text = settings.defaultCreditFooter ?? '';
     _creditTermsController.text = settings.defaultCreditTerms ?? '';
     _purchaseOrderFooterController.text =
@@ -203,6 +215,12 @@ class _CompanyDetailsState extends State<CompanyDetails>
     final defaultInvoiceTerms = _invoiceTermsController.text.trim();
     final defaultQuoteFooter = _quoteFooterController.text.trim();
     final defaultQuoteTerms = _quoteTermsController.text.trim();
+    final defaultOrderConfirmationTerms =
+        _orderConfirmationTermsController.text.trim();
+    final defaultOrderConfirmationFooter =
+        _orderConfirmationFooterController.text.trim();
+    final defaultOrderConfirmationPublicNotes =
+        _orderConfirmationPublicNotesController.text.trim();
     final defaultCreditFooter = _creditFooterController.text.trim();
     final defaultCreditTerms = _creditTermsController.text.trim();
     final defaultPurchaseOrderFooter =
@@ -238,6 +256,18 @@ class _CompanyDetailsState extends State<CompanyDetails>
           isFiltered && defaultQuoteFooter.isEmpty ? null : defaultQuoteFooter
       ..defaultQuoteTerms =
           isFiltered && defaultQuoteTerms.isEmpty ? null : defaultQuoteTerms
+      ..defaultOrderConfirmationTerms =
+          isFiltered && defaultOrderConfirmationTerms.isEmpty
+              ? null
+              : defaultOrderConfirmationTerms
+      ..defaultOrderConfirmationFooter =
+          isFiltered && defaultOrderConfirmationFooter.isEmpty
+              ? null
+              : defaultOrderConfirmationFooter
+      ..defaultOrderConfirmationPublicNotes =
+          isFiltered && defaultOrderConfirmationPublicNotes.isEmpty
+              ? null
+              : defaultOrderConfirmationPublicNotes
       ..defaultCreditFooter =
           isFiltered && defaultCreditFooter.isEmpty ? null : defaultCreditFooter
       ..defaultCreditTerms =
@@ -252,11 +282,10 @@ class _CompanyDetailsState extends State<CompanyDetails>
               : defaultPurchaseOrderTerms
       ..qrIban = isFiltered && qrIban.isEmpty ? null : qrIban
       ..besrId = isFiltered && besrId.isEmpty ? null : besrId);
-    if (settings != widget.viewModel.settings) {
-      _debouncer.run(() {
-        widget.viewModel.onSettingsChanged(settings);
-      });
-    }
+
+    _debouncer.run(() {
+      widget.viewModel.onSettingsChanged(settings);
+    });
   }
 
   @override
@@ -608,6 +637,14 @@ class _CompanyDetailsState extends State<CompanyDetails>
                           settings.rebuild(
                               (b) => b..defaultQuoteDesignId = value!.id)),
                     ),
+                  if (company.isModuleEnabled(EntityType.quote))
+                    DesignPicker(
+                      label: localization.lookup('order_confirmation_design'),
+                      initialValue: settings.defaultOrderConfirmationDesignId,
+                      onSelected: (value) => viewModel.onSettingsChanged(
+                          settings.rebuild((b) =>
+                              b..defaultOrderConfirmationDesignId = value!.id)),
+                    ),
                   if (company.isModuleEnabled(EntityType.credit))
                     DesignPicker(
                       label: localization.creditDesign,
@@ -652,6 +689,27 @@ class _CompanyDetailsState extends State<CompanyDetails>
                     DecoratedFormField(
                       label: localization.quoteFooter,
                       controller: _quoteFooterController,
+                      maxLines: 4,
+                      keyboardType: TextInputType.multiline,
+                    ),
+                    DecoratedFormField(
+                      label:
+                          localization.lookup('order_confirmation_terms'),
+                      controller: _orderConfirmationTermsController,
+                      maxLines: 4,
+                      keyboardType: TextInputType.multiline,
+                    ),
+                    DecoratedFormField(
+                      label:
+                          localization.lookup('order_confirmation_footer'),
+                      controller: _orderConfirmationFooterController,
+                      maxLines: 4,
+                      keyboardType: TextInputType.multiline,
+                    ),
+                    DecoratedFormField(
+                      label: localization
+                          .lookup('order_confirmation_public_notes'),
+                      controller: _orderConfirmationPublicNotesController,
                       maxLines: 4,
                       keyboardType: TextInputType.multiline,
                     ),

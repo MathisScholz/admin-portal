@@ -373,6 +373,9 @@ class SettingsSearch extends StatelessWidget {
           'invoice_footer',
           'quote_terms',
           'quote_footer',
+          'order_confirmation_terms',
+          'order_confirmation_footer',
+          'order_confirmation_public_notes',
           'credit_terms',
           'credit_footer',
         ],
@@ -503,6 +506,7 @@ class SettingsSearch extends StatelessWidget {
         ],
         [
           'auto_convert',
+          'auto_create_order_confirmation',
           'use_quote_terms#2022-05-17',
         ],
       ],

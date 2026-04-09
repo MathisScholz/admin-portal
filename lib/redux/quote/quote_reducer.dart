@@ -28,7 +28,9 @@ EntityUIState quoteUIReducer(QuoteUIState state, dynamic action) {
 
 final forceSelectedReducer = combineReducers<bool?>([
   TypedReducer<bool?, ViewQuote>((completer, action) => true),
+  TypedReducer<bool?, ViewOrderConfirmation>((completer, action) => true),
   TypedReducer<bool?, ViewQuoteList>((completer, action) => false),
+  TypedReducer<bool?, ViewOrderConfirmationList>((completer, action) => false),
   TypedReducer<bool?, FilterQuotesByState>((completer, action) => false),
   TypedReducer<bool?, FilterQuotesByStatus>((completer, action) => false),
   TypedReducer<bool?, FilterQuotes>((completer, action) => false),
@@ -53,6 +55,8 @@ final historyActivityIdReducer = combineReducers<String?>([
 
 final editingItemReducer = combineReducers<int?>([
   TypedReducer<int?, EditQuote>((index, action) => action.quoteItemIndex),
+  TypedReducer<int?, EditOrderConfirmation>(
+      (index, action) => action.quoteItemIndex),
   TypedReducer<int?, EditQuoteItem>((index, action) => action.quoteItemIndex),
 ]);
 
@@ -73,6 +77,8 @@ Reducer<String?> selectedIdReducer = combineReducers([
   TypedReducer<String?, PreviewEntity>((selectedId, action) =>
       action.entityType == EntityType.quote ? action.entityId : selectedId),
   TypedReducer<String?, ViewQuote>((selectedId, action) => action.quoteId),
+  TypedReducer<String?, ViewOrderConfirmation>(
+      (selectedId, action) => action.orderConfirmationId),
   TypedReducer<String?, AddQuoteSuccess>(
       (selectedId, action) => action.quote.id),
   TypedReducer<String?, ShowEmailQuote>(
@@ -104,6 +110,8 @@ final editingReducer = combineReducers<InvoiceEntity?>([
   TypedReducer<InvoiceEntity?, SaveQuoteSuccess>(_updateEditing),
   TypedReducer<InvoiceEntity?, AddQuoteSuccess>(_updateEditing),
   TypedReducer<InvoiceEntity?, EditQuote>(_updateEditing),
+  TypedReducer<InvoiceEntity?, EditOrderConfirmation>(
+      (quote, action) => action.orderConfirmation),
   TypedReducer<InvoiceEntity?, UpdateQuote>((quote, action) {
     return action.quote.rebuild((b) => b..isChanged = true);
   }),
@@ -202,6 +210,7 @@ final quoteListReducer = combineReducers<ListUIState>([
       _removeFromListMultiselect),
   TypedReducer<ListUIState, ClearQuoteMultiselect>(_clearListMultiselect),
   TypedReducer<ListUIState, ViewQuoteList>(_viewQuoteList),
+  TypedReducer<ListUIState, ViewOrderConfirmationList>(_viewQuoteList),
   TypedReducer<ListUIState, FilterByEntity>(
       (state, action) => state.rebuild((b) => b
         ..filter = null

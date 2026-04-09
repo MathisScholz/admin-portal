@@ -58,6 +58,7 @@ abstract class InvoiceItemResponse
 }
 
 class InvoiceFields {
+  static const String documentType = 'document_type';
   static const String total = 'total';
   static const String amount = 'amount';
   static const String balance = 'balance';
@@ -249,6 +250,7 @@ abstract class InvoiceEntity extends Object
       frequencyId: kFrequencyMonthly,
       remainingCycles: -1,
       dueDateDays: 'terms',
+      documentType: null,
       saveDefaultTerms: false,
       saveDefaultFooter: false,
       taxData: TaxDataEntity(),
@@ -546,6 +548,9 @@ abstract class InvoiceEntity extends Object
 
   @BuiltValueField(wireName: 'due_date_days')
   String? get dueDateDays;
+
+  @BuiltValueField(wireName: 'document_type')
+  String? get documentType;
 
   @BuiltValueField(wireName: 'invoice_id')
   String? get invoiceId;
@@ -1068,7 +1073,7 @@ abstract class InvoiceEntity extends Object
           if (state.company.settings.enableEInvoice == true) {
             if (isInvoice) {
               actions.add(EntityAction.eInvoice);
-            } else if (isQuote) {
+            } else if (isQuote && !isOrderConfirmation) {
               actions.add(EntityAction.eQuote);
             } else if (isCredit) {
               actions.add(EntityAction.eCredit);
@@ -1126,9 +1131,14 @@ abstract class InvoiceEntity extends Object
 
         if (isQuote) {
           if ((invoiceId ?? '').isEmpty) {
-            if (!isApproved) {
+            if (!isApproved && !isOrderConfirmation) {
               actions.add(EntityAction.approve);
             }
+
+            if (!multiselect && isApproved && !isOrderConfirmation) {
+              actions.add(EntityAction.createOrderConfirmation);
+            }
+
             actions.add(EntityAction.convertToInvoice);
           } else {
             actions.add(EntityAction.viewInvoice);
@@ -1285,6 +1295,8 @@ abstract class InvoiceEntity extends Object
 
   bool get isQuote => entityType == EntityType.quote;
 
+  bool get isOrderConfirmation => documentType == 'order_confirmation';
+
   bool get isCredit => entityType == EntityType.credit;
 
   bool get isRecurringInvoice => entityType == EntityType.recurringInvoice;
@@ -1297,7 +1309,9 @@ abstract class InvoiceEntity extends Object
 
   bool get hasExchangeRate => exchangeRate != 1 && exchangeRate != 0;
 
-  EmailTemplate get emailTemplate => isPurchaseOrder
+  EmailTemplate get emailTemplate => isOrderConfirmation
+      ? EmailTemplate.order_confirmation
+      : isPurchaseOrder
       ? EmailTemplate.purchase_order
       : isQuote
           ? EmailTemplate.quote

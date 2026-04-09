@@ -183,6 +183,12 @@ class MainScreen extends StatelessWidget {
             editingFilterEntity: editingFilterEntity,
           );
           break;
+        case OrderConfirmationScreen.route:
+          screen = EntityScreens(
+            entityType: EntityType.quote,
+            editingFilterEntity: editingFilterEntity,
+          );
+          break;
         case CreditScreen.route:
           screen = EntityScreens(
             entityType: EntityType.credit,
@@ -426,6 +432,15 @@ class EntityScreens extends StatelessWidget {
                   ? QuoteEmailScreen()
                   : QuoteEditScreen();
           break;
+        case OrderConfirmationScreen.route:
+          child = isPdf
+              ? OrderConfirmationPdfScreen()
+              : isEmail
+                  ? OrderConfirmationEmailScreen()
+                  : subRoute == 'view'
+                      ? OrderConfirmationViewScreen()
+                      : OrderConfirmationEditScreen();
+          break;
         case CreditScreen.route:
           child = isPdf
               ? CreditPdfScreen()
@@ -490,7 +505,9 @@ class EntityScreens extends StatelessWidget {
           child = PaymentEditScreen();
           break;
         case EntityType.quote:
-          child = QuoteEditScreen();
+          child = mainRoute == OrderConfirmationScreen.route
+              ? OrderConfirmationEditScreen()
+              : QuoteEditScreen();
           break;
         case EntityType.credit:
           child = CreditEditScreen();
@@ -552,7 +569,9 @@ class EntityScreens extends StatelessWidget {
             child = PaymentViewScreen();
             break;
           case EntityType.quote:
-            child = QuoteViewScreen();
+            child = mainRoute == OrderConfirmationScreen.route
+                ? OrderConfirmationViewScreen()
+                : QuoteViewScreen();
             break;
           case EntityType.credit:
             child = CreditViewScreen();
@@ -710,7 +729,9 @@ class EntityScreens extends StatelessWidget {
           listWidget = PaymentScreenBuilder();
           break;
         case EntityType.quote:
-          listWidget = QuoteScreenBuilder();
+          listWidget = mainRoute == OrderConfirmationScreen.route
+              ? OrderConfirmationScreenBuilder()
+              : QuoteScreenBuilder();
           break;
         case EntityType.credit:
           listWidget = CreditScreenBuilder();

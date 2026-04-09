@@ -42,6 +42,8 @@ class EntityList extends StatefulWidget {
     required this.onClearMultiselect,
     this.presenter,
     this.tableColumns,
+    this.onTapEntity,
+    this.onViewEntityId,
   }) : super(
             key: ValueKey(
                 '__${entityType}_${tableColumns}_${state.uiState.filterEntityId}_${state.getUIState(entityType)!.listUIState.tableHashCode}__'));
@@ -55,6 +57,8 @@ class EntityList extends StatefulWidget {
   final Function(String) onSortColumn;
   final Function(BuildContext, int) itemBuilder;
   final Function onClearMultiselect;
+  final Function(BaseEntity)? onTapEntity;
+  final Function(String?)? onViewEntityId;
 
   @override
   _EntityListState createState() => _EntityListState();
@@ -83,7 +87,8 @@ class _EntityListState extends State<EntityList> {
       entityList: entityList.toList(),
       entityMap: entityMap as BuiltMap<String?, BaseEntity?>?,
       entityPresenter: widget.presenter,
-      onTap: (BaseEntity entity) => selectEntity(entity: entity),
+      onTap: (BaseEntity entity) =>
+          widget.onTapEntity != null ? widget.onTapEntity!(entity) : selectEntity(entity: entity),
     );
 
     // make sure the initial page shows the selected record
@@ -150,10 +155,14 @@ class _EntityListState extends State<EntityList> {
           : (entityList.isEmpty ? null : entityList.first);
 
       WidgetsBinding.instance.addPostFrameCallback((duration) {
-        viewEntityById(
-          entityType: entityType,
-          entityId: entityId,
-        );
+        if (widget.onViewEntityId != null) {
+          widget.onViewEntityId!(entityId);
+        } else {
+          viewEntityById(
+            entityType: entityType,
+            entityId: entityId,
+          );
+        }
       });
     }
 

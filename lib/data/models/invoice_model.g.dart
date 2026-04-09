@@ -360,6 +360,13 @@ class _$InvoiceEntitySerializer implements StructuredSerializer<InvoiceEntity> {
         ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
+    value = object.documentType;
+    if (value != null) {
+      result
+        ..add('document_type')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
+    }
     value = object.invoiceId;
     if (value != null) {
       result
@@ -663,6 +670,10 @@ class _$InvoiceEntitySerializer implements StructuredSerializer<InvoiceEntity> {
           break;
         case 'due_date_days':
           result.dueDateDays = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String?;
+          break;
+        case 'document_type':
+          result.documentType = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String?;
           break;
         case 'invoice_id':
@@ -1569,6 +1580,8 @@ class _$InvoiceEntity extends InvoiceEntity {
   @override
   final String? dueDateDays;
   @override
+  final String? documentType;
+  @override
   final String? invoiceId;
   @override
   final String? recurringId;
@@ -1672,6 +1685,7 @@ class _$InvoiceEntity extends InvoiceEntity {
       required this.nextSendDatetime,
       this.remainingCycles,
       this.dueDateDays,
+      this.documentType,
       this.invoiceId,
       this.recurringId,
       required this.autoBillEnabled,
@@ -1761,6 +1775,7 @@ class _$InvoiceEntity extends InvoiceEntity {
         nextSendDatetime == other.nextSendDatetime &&
         remainingCycles == other.remainingCycles &&
         dueDateDays == other.dueDateDays &&
+        documentType == other.documentType &&
         invoiceId == other.invoiceId &&
         recurringId == other.recurringId &&
         autoBillEnabled == other.autoBillEnabled &&
@@ -1843,6 +1858,7 @@ class _$InvoiceEntity extends InvoiceEntity {
     _$hash = $jc(_$hash, nextSendDatetime.hashCode);
     _$hash = $jc(_$hash, remainingCycles.hashCode);
     _$hash = $jc(_$hash, dueDateDays.hashCode);
+    _$hash = $jc(_$hash, documentType.hashCode);
     _$hash = $jc(_$hash, invoiceId.hashCode);
     _$hash = $jc(_$hash, recurringId.hashCode);
     _$hash = $jc(_$hash, autoBillEnabled.hashCode);
@@ -1925,6 +1941,7 @@ class _$InvoiceEntity extends InvoiceEntity {
           ..add('nextSendDatetime', nextSendDatetime)
           ..add('remainingCycles', remainingCycles)
           ..add('dueDateDays', dueDateDays)
+          ..add('documentType', documentType)
           ..add('invoiceId', invoiceId)
           ..add('recurringId', recurringId)
           ..add('autoBillEnabled', autoBillEnabled)
@@ -2190,6 +2207,10 @@ class InvoiceEntityBuilder
   String? get dueDateDays => _$this._dueDateDays;
   set dueDateDays(String? dueDateDays) => _$this._dueDateDays = dueDateDays;
 
+  String? _documentType;
+  String? get documentType => _$this._documentType;
+  set documentType(String? documentType) => _$this._documentType = documentType;
+
   String? _invoiceId;
   String? get invoiceId => _$this._invoiceId;
   set invoiceId(String? invoiceId) => _$this._invoiceId = invoiceId;
@@ -2356,6 +2377,7 @@ class InvoiceEntityBuilder
       _nextSendDatetime = $v.nextSendDatetime;
       _remainingCycles = $v.remainingCycles;
       _dueDateDays = $v.dueDateDays;
+      _documentType = $v.documentType;
       _invoiceId = $v.invoiceId;
       _recurringId = $v.recurringId;
       _autoBillEnabled = $v.autoBillEnabled;
@@ -2502,6 +2524,7 @@ class InvoiceEntityBuilder
                 nextSendDatetime, r'InvoiceEntity', 'nextSendDatetime'),
             remainingCycles: remainingCycles,
             dueDateDays: dueDateDays,
+            documentType: documentType,
             invoiceId: invoiceId,
             recurringId: recurringId,
             autoBillEnabled: BuiltValueNullFieldError.checkNotNull(

@@ -15,6 +15,11 @@ import 'package:invoiceninja_flutter/redux/app/app_state.dart';
 import 'package:invoiceninja_flutter/redux/credit/credit_actions.dart';
 import 'package:invoiceninja_flutter/redux/quote/quote_actions.dart';
 import 'package:invoiceninja_flutter/redux/ui/ui_actions.dart';
+import 'package:invoiceninja_flutter/ui/order_confirmation/edit/order_confirmation_edit_vm.dart';
+import 'package:invoiceninja_flutter/ui/order_confirmation/order_confirmation_email_vm.dart';
+import 'package:invoiceninja_flutter/ui/order_confirmation/order_confirmation_pdf_vm.dart';
+import 'package:invoiceninja_flutter/ui/order_confirmation/order_confirmation_screen.dart';
+import 'package:invoiceninja_flutter/ui/order_confirmation/view/order_confirmation_view_vm.dart';
 import 'package:invoiceninja_flutter/ui/quote/edit/quote_edit_vm.dart';
 import 'package:invoiceninja_flutter/ui/quote/quote_email_vm.dart';
 import 'package:invoiceninja_flutter/ui/quote/quote_pdf_vm.dart';
@@ -25,14 +30,18 @@ List<Middleware<AppState>> createStoreQuotesMiddleware([
   QuoteRepository repository = const QuoteRepository(),
 ]) {
   final viewQuoteList = _viewQuoteList();
+  final viewOrderConfirmationList = _viewOrderConfirmationList();
   final viewQuote = _viewQuote();
+  final viewOrderConfirmation = _viewOrderConfirmation();
   final editQuote = _editQuote();
+  final editOrderConfirmation = _editOrderConfirmation();
   final showEmailQuote = _showEmailQuote();
   final showPdfQuote = _showPdfQuote();
   final convertQuotesToInvoices = _convertQuotesToInvoices(repository);
   final convertQuotesToProjects = _convertQuotesToProjects(repository);
   final approveQuote = _approveQuote(repository);
   final loadQuotes = _loadQuotes(repository);
+  final loadOrderConfirmations = _loadOrderConfirmations(repository);
   final loadQuote = _loadQuote(repository);
   final saveQuote = _saveQuote(repository);
   final archiveQuote = _archiveQuote(repository);
@@ -46,14 +55,19 @@ List<Middleware<AppState>> createStoreQuotesMiddleware([
 
   return [
     TypedMiddleware<AppState, ViewQuoteList>(viewQuoteList),
+    TypedMiddleware<AppState, ViewOrderConfirmationList>(
+        viewOrderConfirmationList),
     TypedMiddleware<AppState, ViewQuote>(viewQuote),
+    TypedMiddleware<AppState, ViewOrderConfirmation>(viewOrderConfirmation),
     TypedMiddleware<AppState, EditQuote>(editQuote),
+    TypedMiddleware<AppState, EditOrderConfirmation>(editOrderConfirmation),
     TypedMiddleware<AppState, ConvertQuotesToInvoices>(convertQuotesToInvoices),
     TypedMiddleware<AppState, ConvertQuotesToProjects>(convertQuotesToProjects),
     TypedMiddleware<AppState, ApproveQuotes>(approveQuote),
     TypedMiddleware<AppState, ShowEmailQuote>(showEmailQuote),
     TypedMiddleware<AppState, ShowPdfQuote>(showPdfQuote),
     TypedMiddleware<AppState, LoadQuotes>(loadQuotes),
+    TypedMiddleware<AppState, LoadOrderConfirmations>(loadOrderConfirmations),
     TypedMiddleware<AppState, LoadQuote>(loadQuote),
     TypedMiddleware<AppState, SaveQuoteRequest>(saveQuote),
     TypedMiddleware<AppState, ArchiveQuotesRequest>(archiveQuote),
@@ -101,6 +115,26 @@ Middleware<AppState> _viewQuoteList() {
   };
 }
 
+Middleware<AppState> _viewOrderConfirmationList() {
+  return (Store<AppState> store, dynamic dynamicAction, NextDispatcher next) {
+    final action = dynamicAction as ViewOrderConfirmationList?;
+
+    next(action);
+
+    if (store.state.isStale) {
+      store.dispatch(RefreshData());
+    }
+
+    store.dispatch(UpdateCurrentRoute(OrderConfirmationScreen.route));
+    store.dispatch(LoadOrderConfirmations(page: (action?.page ?? 0) + 1));
+
+    if (store.state.prefState.isMobile) {
+      navigatorKey.currentState!.pushNamedAndRemoveUntil(
+          OrderConfirmationScreen.route, (Route<dynamic> route) => false);
+    }
+  };
+}
+
 Middleware<AppState> _editQuote() {
   return (Store<AppState> store, dynamic dynamicAction, NextDispatcher next) {
     final action = dynamicAction as EditQuote?;
@@ -115,18 +149,50 @@ Middleware<AppState> _editQuote() {
   };
 }
 
+Middleware<AppState> _viewOrderConfirmation() {
+  return (Store<AppState> store, dynamic dynamicAction,
+      NextDispatcher next) async {
+    final action = dynamicAction as ViewOrderConfirmation?;
+
+    next(action);
+
+    store.dispatch(UpdateCurrentRoute(OrderConfirmationViewScreen.route));
+
+    if (store.state.prefState.isMobile) {
+      await navigatorKey.currentState!
+          .pushNamed(OrderConfirmationViewScreen.route);
+    }
+  };
+}
+
+Middleware<AppState> _editOrderConfirmation() {
+  return (Store<AppState> store, dynamic dynamicAction, NextDispatcher next) {
+    final action = dynamicAction as EditOrderConfirmation?;
+
+    next(action);
+
+    store.dispatch(UpdateCurrentRoute(OrderConfirmationEditScreen.route));
+
+    if (store.state.prefState.isMobile) {
+      navigatorKey.currentState!.pushNamed(OrderConfirmationEditScreen.route);
+    }
+  };
+}
+
 Middleware<AppState> _showEmailQuote() {
   return (Store<AppState> store, dynamic dynamicAction,
       NextDispatcher next) async {
     final action = dynamicAction as ShowEmailQuote?;
+    final route = action?.quote?.isOrderConfirmation == true
+        ? OrderConfirmationEmailScreen.route
+        : QuoteEmailScreen.route;
 
     next(action);
 
-    store.dispatch(UpdateCurrentRoute(QuoteEmailScreen.route));
+    store.dispatch(UpdateCurrentRoute(route));
 
     if (store.state.prefState.isMobile) {
-      final emailWasSent =
-          await navigatorKey.currentState!.pushNamed(QuoteEmailScreen.route);
+      final emailWasSent = await navigatorKey.currentState!.pushNamed(route);
 
       if (action!.completer != null &&
           emailWasSent != null &&
@@ -141,13 +207,16 @@ Middleware<AppState> _showPdfQuote() {
   return (Store<AppState> store, dynamic dynamicAction,
       NextDispatcher next) async {
     final action = dynamicAction as ShowPdfQuote?;
+    final route = action?.quote?.isOrderConfirmation == true
+        ? OrderConfirmationPdfScreen.route
+        : QuotePdfScreen.route;
 
     next(action);
 
-    store.dispatch(UpdateCurrentRoute(QuotePdfScreen.route));
+    store.dispatch(UpdateCurrentRoute(route));
 
     if (store.state.prefState.isMobile) {
-      navigatorKey.currentState!.pushNamed(QuotePdfScreen.route);
+      navigatorKey.currentState!.pushNamed(route);
     }
   };
 }
@@ -455,6 +524,52 @@ Middleware<AppState> _loadQuotes(QuoteRepository repository) {
           action.completer!.complete(null);
         }
         store.dispatch(LoadCredits());
+      }
+    }).catchError((Object error) {
+      print(error);
+      store.dispatch(LoadQuotesFailure(error));
+      if (action.completer != null) {
+        action.completer!.completeError(error);
+      }
+    });
+
+    next(action);
+  };
+}
+
+Middleware<AppState> _loadOrderConfirmations(QuoteRepository repository) {
+  return (Store<AppState> store, dynamic dynamicAction, NextDispatcher next) {
+    final action = dynamicAction as LoadOrderConfirmations;
+    final state = store.state;
+
+    repository
+        .loadList(
+      state.credentials,
+      action.page,
+      state.createdAtLimit,
+      state.filterDeletedClients,
+      documentType: 'order_confirmation',
+    )
+        .then((data) {
+      store.dispatch(LoadQuotesSuccess(data));
+
+      final documents = <DocumentEntity>[];
+      data.forEach((quote) {
+        quote.documents.forEach((document) {
+          documents.add(document.rebuild((b) => b
+            ..parentId = quote.id
+            ..parentType = EntityType.quote));
+        });
+      });
+      store.dispatch(LoadDocumentsSuccess(documents));
+
+      if (data.length == kMaxRecordsPerPage) {
+        store.dispatch(LoadOrderConfirmations(
+          completer: action.completer,
+          page: action.page + 1,
+        ));
+      } else if (action.completer != null) {
+        action.completer!.complete(null);
       }
     }).catchError((Object error) {
       print(error);

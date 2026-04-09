@@ -6,6 +6,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 
 // Project imports:
 import 'package:invoiceninja_flutter/data/models/entities.dart';
+import 'package:invoiceninja_flutter/data/models/models.dart';
 import 'package:invoiceninja_flutter/redux/app/app_state.dart';
 import 'package:invoiceninja_flutter/ui/app/link_text.dart';
 import 'package:invoiceninja_flutter/utils/formatting.dart';
@@ -27,7 +28,10 @@ class EntityPresenter {
 
   String? title({bool isNarrow = false}) {
     final localization = AppLocalization.of(context)!;
-    final type = localization.lookup('${entity.entityType}');
+    final type = entity is InvoiceEntity &&
+            (entity as InvoiceEntity).isOrderConfirmation
+        ? localization.lookup('order_confirmation')
+        : localization.lookup('${entity.entityType}');
     var name = entity.listDisplayName;
 
     // TODO replace with this: https://github.com/flutter/flutter/issues/45336

@@ -22,11 +22,17 @@ class QuoteListItem extends StatelessWidget {
     required this.quote,
     this.filter,
     this.showCheckbox = true,
+    this.onTap,
+    this.onLongPress,
+    this.onEntityAction,
   });
 
   final InvoiceEntity quote;
   final String? filter;
   final bool showCheckbox;
+  final void Function()? onTap;
+  final void Function()? onLongPress;
+  final Function(EntityAction?)? onEntityAction;
 
   @override
   Widget build(BuildContext context) {
@@ -68,10 +74,10 @@ class QuoteListItem extends StatelessWidget {
             builder: (BuildContext context, BoxConstraints constraints) {
           return constraints.maxWidth > kTableListWidthCutoff
               ? InkWell(
-                  onTap: () =>
-                      selectEntity(entity: quote, forceView: !showCheckbox),
-                  onLongPress: () =>
-                      selectEntity(entity: quote, longPress: true),
+                  onTap: onTap ??
+                      () => selectEntity(entity: quote, forceView: !showCheckbox),
+                  onLongPress:
+                      onLongPress ?? () => selectEntity(entity: quote, longPress: true),
                   child: Padding(
                     padding: const EdgeInsets.only(
                       left: 10,
@@ -105,7 +111,9 @@ class QuoteListItem extends StatelessWidget {
                                     isSaving: false,
                                     entity: quote,
                                     onSelected: (context, action) =>
-                                        handleEntityAction(quote, action),
+                                        onEntityAction != null
+                                            ? onEntityAction!(action)
+                                            : handleEntityAction(quote, action),
                                   )),
                         SizedBox(
                           width: kListNumberWidth,
@@ -163,10 +171,10 @@ class QuoteListItem extends StatelessWidget {
                   ),
                 )
               : ListTile(
-                  onTap: () =>
-                      selectEntity(entity: quote, forceView: !showCheckbox),
-                  onLongPress: () =>
-                      selectEntity(entity: quote, longPress: true),
+                  onTap: onTap ??
+                      () => selectEntity(entity: quote, forceView: !showCheckbox),
+                  onLongPress:
+                      onLongPress ?? () => selectEntity(entity: quote, longPress: true),
                   leading: isInMultiselect
                       ? IgnorePointer(
                           ignoring: listUIState.isInMultiselect(),
