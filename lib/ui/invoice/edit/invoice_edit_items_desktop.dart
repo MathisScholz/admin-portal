@@ -629,7 +629,10 @@ class _InvoiceEditItemsDesktopState extends State<InvoiceEditItemsDesktop> {
       );
     }
 
-    lineItems.add(InvoiceItemEntity());
+    lineItems.add(InvoiceItemEntity().rebuild((b) => b
+      ..rentalDays = !widget.isTasks && invoice.defaultRentalDays > 0
+          ? invoice.defaultRentalDays
+          : 1));
 
     tableHeaderColumns.addAll([
       TableHeader(
