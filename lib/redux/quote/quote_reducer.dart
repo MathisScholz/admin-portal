@@ -210,7 +210,7 @@ final quoteListReducer = combineReducers<ListUIState>([
       _removeFromListMultiselect),
   TypedReducer<ListUIState, ClearQuoteMultiselect>(_clearListMultiselect),
   TypedReducer<ListUIState, ViewQuoteList>(_viewQuoteList),
-  TypedReducer<ListUIState, ViewOrderConfirmationList>(_viewQuoteList),
+  TypedReducer<ListUIState, ViewOrderConfirmationList>(_viewOrderConfirmationList),
   TypedReducer<ListUIState, FilterByEntity>(
       (state, action) => state.rebuild((b) => b
         ..filter = null
@@ -219,6 +219,14 @@ final quoteListReducer = combineReducers<ListUIState>([
 
 ListUIState _viewQuoteList(ListUIState quoteListState, ViewQuoteList action) {
   return quoteListState.rebuild((b) => b
+    ..selectedIds = null
+    ..filter = null
+    ..filterClearedAt = DateTime.now().millisecondsSinceEpoch);
+}
+
+ListUIState _viewOrderConfirmationList(
+    ListUIState state, ViewOrderConfirmationList action) {
+  return state.rebuild((b) => b
     ..selectedIds = null
     ..filter = null
     ..filterClearedAt = DateTime.now().millisecondsSinceEpoch);

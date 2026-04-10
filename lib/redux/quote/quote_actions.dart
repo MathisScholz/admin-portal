@@ -610,12 +610,12 @@ Future handleQuoteAction(
     case EntityAction.createOrderConfirmation:
       confirmCallback(
           context: context,
-          message: localization.lookup(action.toString()),
+          message: localization!.lookup(action.toString()),
           callback: (_) async {
             store.dispatch(StartLoading());
 
             await const QuoteRepository()
-                .bulkAction(store.state.credentials, quoteIds, action)
+                .bulkAction(store.state.credentials, quoteIds, action!)
                 .then((quotes) {
               store.dispatch(StopLoading());
               store.dispatch(RefreshData());
@@ -677,7 +677,7 @@ Future handleQuoteAction(
       if (action == EntityAction.sendEmail) {
         store.dispatch(ShowEmailQuote(
             completer: snackBarCompleter<Null>(quote.isOrderConfirmation
-                ? localization.lookup('emailed_order_confirmation')
+                ? localization!.lookup('emailed_order_confirmation')
                 : localization!.emailedQuote),
             quote: quote,
             context: context));
