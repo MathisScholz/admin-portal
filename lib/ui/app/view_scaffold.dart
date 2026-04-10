@@ -25,6 +25,7 @@ class ViewScaffold extends StatelessWidget {
     this.appBarBottom,
     this.isFilter = false,
     this.onBackPressed,
+    this.onEditPressed,
     this.title,
     this.isEditable = true,
   });
@@ -33,6 +34,7 @@ class ViewScaffold extends StatelessWidget {
   final BaseEntity entity;
   final Widget body;
   final Function? onBackPressed;
+  final Function(BuildContext)? onEditPressed;
   final Widget? appBarBottom;
   final String? title;
   final bool isEditable;
@@ -128,7 +130,11 @@ class ViewScaffold extends StatelessWidget {
                         onPressed: isDisabled
                             ? null
                             : () {
-                                editEntity(entity: entity);
+                                if (onEditPressed != null) {
+                                  onEditPressed!(context);
+                                } else {
+                                  editEntity(entity: entity);
+                                }
                               },
                       );
                     }),

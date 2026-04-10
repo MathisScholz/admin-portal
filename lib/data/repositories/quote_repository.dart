@@ -37,13 +37,22 @@ class QuoteRepository {
     return quoteResponse.data;
   }
 
-  Future<BuiltList<InvoiceEntity>> loadList(Credentials credentials, int page,
-      int createdAt, bool filterDeleted) async {
+  Future<BuiltList<InvoiceEntity>> loadList(
+    Credentials credentials,
+    int page,
+    int createdAt,
+    bool filterDeleted, {
+    String? documentType,
+  }) async {
     String url = credentials.url +
         '/quotes?per_page=$kMaxRecordsPerPage&page=$page&created_at=$createdAt';
 
     if (filterDeleted) {
       url += '&filter_deleted_clients=true';
+    }
+
+    if ((documentType ?? '').isNotEmpty) {
+      url += '&document_type=$documentType';
     }
 
     final dynamic response = await webClient.get(url, credentials.token);

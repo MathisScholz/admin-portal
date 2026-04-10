@@ -33,6 +33,7 @@ import 'package:invoiceninja_flutter/redux/app/app_actions.dart';
 import 'package:invoiceninja_flutter/redux/app/app_state.dart';
 import 'package:invoiceninja_flutter/redux/company_gateway/company_gateway_selectors.dart';
 import 'package:invoiceninja_flutter/redux/dashboard/dashboard_actions.dart';
+import 'package:invoiceninja_flutter/redux/quote/quote_actions.dart';
 import 'package:invoiceninja_flutter/redux/ui/pref_state.dart';
 import 'package:invoiceninja_flutter/ui/app/app_border.dart';
 import 'package:invoiceninja_flutter/ui/app/buttons/elevated_button.dart';
@@ -645,6 +646,29 @@ class _MenuDrawerState extends State<MenuDrawer> {
                                 ),
                                 DrawerTile(
                                   company: company,
+                                  entityType: EntityType.quote,
+                                  route: 'order_confirmation',
+                                  icon: MdiIcons.fileDocumentCheckOutline,
+                                  title: localization.lookup(
+                                      'order_confirmations'),
+                                  iconTooltip:
+                                      localization.lookup('new_order_confirmation'),
+                                  onTap: () {
+                                    store.dispatch(ViewOrderConfirmationList());
+                                  },
+                                  onCreateTap: () {
+                                    store.dispatch(EditOrderConfirmation(
+                                      orderConfirmation: InvoiceEntity(
+                                        state: store.state,
+                                        entityType: EntityType.quote,
+                                        user: store.state.user,
+                                      ).rebuild((b) =>
+                                          b..documentType = 'order_confirmation'),
+                                    ));
+                                  },
+                                ),
+                                DrawerTile(
+                                  company: company,
                                   entityType: EntityType.credit,
                                   icon: getEntityIcon(EntityType.credit),
                                   title: localization.credits,
@@ -753,6 +777,7 @@ class DrawerTile extends StatefulWidget {
     required this.title,
     this.onTap,
     this.entityType,
+    this.route,
     this.onLongPress,
     this.onCreateTap,
     this.iconTooltip,
@@ -760,6 +785,7 @@ class DrawerTile extends StatefulWidget {
 
   final CompanyEntity company;
   final EntityType? entityType;
+  final String? route;
   final IconData icon;
   final String? title;
   final Function? onTap;
@@ -802,6 +828,8 @@ class _DrawerTileState extends State<DrawerTile> {
       route = kReports;
     } else if (widget.title == localization.kanban) {
       route = kKanban;
+    } else if ((widget.route ?? '').isNotEmpty) {
+      route = widget.route!;
     } else {
       route = widget.entityType!.name;
     }
@@ -858,7 +886,12 @@ class _DrawerTileState extends State<DrawerTile> {
     }
 
     final onTap = () {
-      if (widget.entityType != null) {
+      if (widget.onTap != null) {
+        if (isMobile(context)) {
+          navigator.pop();
+        }
+        widget.onTap!();
+      } else if (widget.entityType != null) {
         viewEntitiesByType(
           entityType: widget.entityType,
         );
@@ -868,7 +901,9 @@ class _DrawerTileState extends State<DrawerTile> {
     };
 
     final onLongPress = () {
-      if (widget.onLongPress != null) {
+      if (widget.onCreateTap != null) {
+        widget.onCreateTap!();
+      } else if (widget.onLongPress != null) {
         widget.onLongPress!();
       } else if (widget.entityType != null) {
         createEntityByType(
@@ -942,11 +977,15 @@ class _DrawerTileState extends State<DrawerTile> {
           if (isMobile(context)) {
             navigator.pop();
           }
-          createEntityByType(
-            context: context,
-            entityType: widget.entityType,
-            applyFilter: false,
-          );
+          if (widget.onCreateTap != null) {
+            widget.onCreateTap!();
+          } else {
+            createEntityByType(
+              context: context,
+              entityType: widget.entityType,
+              applyFilter: false,
+            );
+          }
         },
       );
     }

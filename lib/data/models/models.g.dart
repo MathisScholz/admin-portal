@@ -91,6 +91,8 @@ const EntityAction _$convertToInvoice =
     const EntityAction._('convertToInvoice');
 const EntityAction _$convertToProject =
     const EntityAction._('convertToProject');
+const EntityAction _$createOrderConfirmation =
+    const EntityAction._('createOrderConfirmation');
 const EntityAction _$merge = const EntityAction._('merge');
 const EntityAction _$bulkPrint = const EntityAction._('bulkPrint');
 const EntityAction _$autoBill = const EntityAction._('autoBill');
@@ -259,6 +261,8 @@ EntityAction _$valueOf(String name) {
       return _$convertToInvoice;
     case 'convertToProject':
       return _$convertToProject;
+    case 'createOrderConfirmation':
+      return _$createOrderConfirmation;
     case 'merge':
       return _$merge;
     case 'bulkPrint':
@@ -374,6 +378,7 @@ final BuiltSet<EntityAction> _$values =
   _$convertToPayment,
   _$convertToInvoice,
   _$convertToProject,
+  _$createOrderConfirmation,
   _$merge,
   _$bulkPrint,
   _$autoBill,

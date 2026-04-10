@@ -289,6 +289,13 @@ class _$SettingsEntitySerializer
         ..add(
             serializers.serialize(value, specifiedType: const FullType(bool)));
     }
+    value = object.autoCreateOrderConfirmation;
+    if (value != null) {
+      result
+        ..add('auto_create_order_confirmation')
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
+    }
     value = object.enableInclusiveTaxes;
     if (value != null) {
       result
@@ -524,6 +531,27 @@ class _$SettingsEntitySerializer
         ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
+    value = object.defaultOrderConfirmationTerms;
+    if (value != null) {
+      result
+        ..add('order_confirmation_terms')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
+    }
+    value = object.defaultOrderConfirmationFooter;
+    if (value != null) {
+      result
+        ..add('order_confirmation_footer')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
+    }
+    value = object.defaultOrderConfirmationPublicNotes;
+    if (value != null) {
+      result
+        ..add('order_confirmation_public_notes')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
+    }
     value = object.defaultCreditTerms;
     if (value != null) {
       result
@@ -549,6 +577,13 @@ class _$SettingsEntitySerializer
     if (value != null) {
       result
         ..add('quote_design_id')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
+    }
+    value = object.defaultOrderConfirmationDesignId;
+    if (value != null) {
+      result
+        ..add('order_confirmation_design_id')
         ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
@@ -674,6 +709,13 @@ class _$SettingsEntitySerializer
         ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
+    value = object.emailSubjectOrderConfirmation;
+    if (value != null) {
+      result
+        ..add('email_subject_order_confirmation')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
+    }
     value = object.emailSubjectCredit;
     if (value != null) {
       result
@@ -706,6 +748,13 @@ class _$SettingsEntitySerializer
     if (value != null) {
       result
         ..add('email_template_quote')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
+    }
+    value = object.emailBodyOrderConfirmation;
+    if (value != null) {
+      result
+        ..add('email_template_order_confirmation')
         ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
@@ -1918,6 +1967,10 @@ class _$SettingsEntitySerializer
           result.autoConvertQuote = serializers.deserialize(value,
               specifiedType: const FullType(bool)) as bool?;
           break;
+        case 'auto_create_order_confirmation':
+          result.autoCreateOrderConfirmation = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool?;
+          break;
         case 'inclusive_taxes':
           result.enableInclusiveTaxes = serializers.deserialize(value,
               specifiedType: const FullType(bool)) as bool?;
@@ -2061,6 +2114,19 @@ class _$SettingsEntitySerializer
           result.defaultQuoteFooter = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String?;
           break;
+        case 'order_confirmation_terms':
+          result.defaultOrderConfirmationTerms = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String?;
+          break;
+        case 'order_confirmation_footer':
+          result.defaultOrderConfirmationFooter = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String?;
+          break;
+        case 'order_confirmation_public_notes':
+          result.defaultOrderConfirmationPublicNotes =
+              serializers.deserialize(value,
+                  specifiedType: const FullType(String)) as String?;
+          break;
         case 'credit_terms':
           result.defaultCreditTerms = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String?;
@@ -2076,6 +2142,11 @@ class _$SettingsEntitySerializer
         case 'quote_design_id':
           result.defaultQuoteDesignId = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String?;
+          break;
+        case 'order_confirmation_design_id':
+          result.defaultOrderConfirmationDesignId =
+              serializers.deserialize(value,
+                  specifiedType: const FullType(String)) as String?;
           break;
         case 'credit_design_id':
           result.defaultCreditDesignId = serializers.deserialize(value,
@@ -2148,6 +2219,10 @@ class _$SettingsEntitySerializer
           result.emailSubjectQuote = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String?;
           break;
+        case 'email_subject_order_confirmation':
+          result.emailSubjectOrderConfirmation = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String?;
+          break;
         case 'email_subject_credit':
           result.emailSubjectCredit = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String?;
@@ -2166,6 +2241,10 @@ class _$SettingsEntitySerializer
           break;
         case 'email_template_quote':
           result.emailBodyQuote = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String?;
+          break;
+        case 'email_template_order_confirmation':
+          result.emailBodyOrderConfirmation = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String?;
           break;
         case 'email_template_credit':
@@ -2925,6 +3004,8 @@ class _$SettingsEntity extends SettingsEntity {
   @override
   final bool? autoConvertQuote;
   @override
+  final bool? autoCreateOrderConfirmation;
+  @override
   final bool? enableInclusiveTaxes;
   @override
   final BuiltMap<String?, String>? translations;
@@ -2995,6 +3076,12 @@ class _$SettingsEntity extends SettingsEntity {
   @override
   final String? defaultQuoteFooter;
   @override
+  final String? defaultOrderConfirmationTerms;
+  @override
+  final String? defaultOrderConfirmationFooter;
+  @override
+  final String? defaultOrderConfirmationPublicNotes;
+  @override
   final String? defaultCreditTerms;
   @override
   final String? defaultCreditFooter;
@@ -3002,6 +3089,8 @@ class _$SettingsEntity extends SettingsEntity {
   final String? defaultInvoiceDesignId;
   @override
   final String? defaultQuoteDesignId;
+  @override
+  final String? defaultOrderConfirmationDesignId;
   @override
   final String? defaultCreditDesignId;
   @override
@@ -3037,6 +3126,8 @@ class _$SettingsEntity extends SettingsEntity {
   @override
   final String? emailSubjectQuote;
   @override
+  final String? emailSubjectOrderConfirmation;
+  @override
   final String? emailSubjectCredit;
   @override
   final String? emailSubjectPayment;
@@ -3046,6 +3137,8 @@ class _$SettingsEntity extends SettingsEntity {
   final String? emailBodyInvoice;
   @override
   final String? emailBodyQuote;
+  @override
+  final String? emailBodyOrderConfirmation;
   @override
   final String? emailBodyCredit;
   @override
@@ -3389,6 +3482,7 @@ class _$SettingsEntity extends SettingsEntity {
       this.autoArchiveQuote,
       this.autoEmailInvoice,
       this.autoConvertQuote,
+      this.autoCreateOrderConfirmation,
       this.enableInclusiveTaxes,
       this.translations,
       this.taskNumberPattern,
@@ -3424,10 +3518,14 @@ class _$SettingsEntity extends SettingsEntity {
       this.defaultInvoiceTerms,
       this.defaultQuoteTerms,
       this.defaultQuoteFooter,
+      this.defaultOrderConfirmationTerms,
+      this.defaultOrderConfirmationFooter,
+      this.defaultOrderConfirmationPublicNotes,
       this.defaultCreditTerms,
       this.defaultCreditFooter,
       this.defaultInvoiceDesignId,
       this.defaultQuoteDesignId,
+      this.defaultOrderConfirmationDesignId,
       this.defaultCreditDesignId,
       this.defaultDeliveryNoteDesignId,
       this.defaultStatementDesignId,
@@ -3445,11 +3543,13 @@ class _$SettingsEntity extends SettingsEntity {
       this.emailSignature,
       this.emailSubjectInvoice,
       this.emailSubjectQuote,
+      this.emailSubjectOrderConfirmation,
       this.emailSubjectCredit,
       this.emailSubjectPayment,
       this.emailSubjectPaymentPartial,
       this.emailBodyInvoice,
       this.emailBodyQuote,
+      this.emailBodyOrderConfirmation,
       this.emailBodyCredit,
       this.emailBodyPayment,
       this.emailBodyPaymentPartial,
@@ -3650,6 +3750,7 @@ class _$SettingsEntity extends SettingsEntity {
         autoArchiveQuote == other.autoArchiveQuote &&
         autoEmailInvoice == other.autoEmailInvoice &&
         autoConvertQuote == other.autoConvertQuote &&
+        autoCreateOrderConfirmation == other.autoCreateOrderConfirmation &&
         enableInclusiveTaxes == other.enableInclusiveTaxes &&
         translations == other.translations &&
         taskNumberPattern == other.taskNumberPattern &&
@@ -3685,10 +3786,16 @@ class _$SettingsEntity extends SettingsEntity {
         defaultInvoiceTerms == other.defaultInvoiceTerms &&
         defaultQuoteTerms == other.defaultQuoteTerms &&
         defaultQuoteFooter == other.defaultQuoteFooter &&
+        defaultOrderConfirmationTerms == other.defaultOrderConfirmationTerms &&
+        defaultOrderConfirmationFooter == other.defaultOrderConfirmationFooter &&
+        defaultOrderConfirmationPublicNotes ==
+            other.defaultOrderConfirmationPublicNotes &&
         defaultCreditTerms == other.defaultCreditTerms &&
         defaultCreditFooter == other.defaultCreditFooter &&
         defaultInvoiceDesignId == other.defaultInvoiceDesignId &&
         defaultQuoteDesignId == other.defaultQuoteDesignId &&
+        defaultOrderConfirmationDesignId ==
+            other.defaultOrderConfirmationDesignId &&
         defaultCreditDesignId == other.defaultCreditDesignId &&
         defaultDeliveryNoteDesignId == other.defaultDeliveryNoteDesignId &&
         defaultStatementDesignId == other.defaultStatementDesignId &&
@@ -3706,11 +3813,13 @@ class _$SettingsEntity extends SettingsEntity {
         emailSignature == other.emailSignature &&
         emailSubjectInvoice == other.emailSubjectInvoice &&
         emailSubjectQuote == other.emailSubjectQuote &&
+        emailSubjectOrderConfirmation == other.emailSubjectOrderConfirmation &&
         emailSubjectCredit == other.emailSubjectCredit &&
         emailSubjectPayment == other.emailSubjectPayment &&
         emailSubjectPaymentPartial == other.emailSubjectPaymentPartial &&
         emailBodyInvoice == other.emailBodyInvoice &&
         emailBodyQuote == other.emailBodyQuote &&
+        emailBodyOrderConfirmation == other.emailBodyOrderConfirmation &&
         emailBodyCredit == other.emailBodyCredit &&
         emailBodyPayment == other.emailBodyPayment &&
         emailBodyPaymentPartial == other.emailBodyPaymentPartial &&
@@ -3912,6 +4021,7 @@ class _$SettingsEntity extends SettingsEntity {
     _$hash = $jc(_$hash, autoArchiveQuote.hashCode);
     _$hash = $jc(_$hash, autoEmailInvoice.hashCode);
     _$hash = $jc(_$hash, autoConvertQuote.hashCode);
+    _$hash = $jc(_$hash, autoCreateOrderConfirmation.hashCode);
     _$hash = $jc(_$hash, enableInclusiveTaxes.hashCode);
     _$hash = $jc(_$hash, translations.hashCode);
     _$hash = $jc(_$hash, taskNumberPattern.hashCode);
@@ -3947,10 +4057,14 @@ class _$SettingsEntity extends SettingsEntity {
     _$hash = $jc(_$hash, defaultInvoiceTerms.hashCode);
     _$hash = $jc(_$hash, defaultQuoteTerms.hashCode);
     _$hash = $jc(_$hash, defaultQuoteFooter.hashCode);
+    _$hash = $jc(_$hash, defaultOrderConfirmationTerms.hashCode);
+    _$hash = $jc(_$hash, defaultOrderConfirmationFooter.hashCode);
+    _$hash = $jc(_$hash, defaultOrderConfirmationPublicNotes.hashCode);
     _$hash = $jc(_$hash, defaultCreditTerms.hashCode);
     _$hash = $jc(_$hash, defaultCreditFooter.hashCode);
     _$hash = $jc(_$hash, defaultInvoiceDesignId.hashCode);
     _$hash = $jc(_$hash, defaultQuoteDesignId.hashCode);
+    _$hash = $jc(_$hash, defaultOrderConfirmationDesignId.hashCode);
     _$hash = $jc(_$hash, defaultCreditDesignId.hashCode);
     _$hash = $jc(_$hash, defaultDeliveryNoteDesignId.hashCode);
     _$hash = $jc(_$hash, defaultStatementDesignId.hashCode);
@@ -3968,11 +4082,13 @@ class _$SettingsEntity extends SettingsEntity {
     _$hash = $jc(_$hash, emailSignature.hashCode);
     _$hash = $jc(_$hash, emailSubjectInvoice.hashCode);
     _$hash = $jc(_$hash, emailSubjectQuote.hashCode);
+    _$hash = $jc(_$hash, emailSubjectOrderConfirmation.hashCode);
     _$hash = $jc(_$hash, emailSubjectCredit.hashCode);
     _$hash = $jc(_$hash, emailSubjectPayment.hashCode);
     _$hash = $jc(_$hash, emailSubjectPaymentPartial.hashCode);
     _$hash = $jc(_$hash, emailBodyInvoice.hashCode);
     _$hash = $jc(_$hash, emailBodyQuote.hashCode);
+    _$hash = $jc(_$hash, emailBodyOrderConfirmation.hashCode);
     _$hash = $jc(_$hash, emailBodyCredit.hashCode);
     _$hash = $jc(_$hash, emailBodyPayment.hashCode);
     _$hash = $jc(_$hash, emailBodyPaymentPartial.hashCode);
@@ -4168,6 +4284,8 @@ class _$SettingsEntity extends SettingsEntity {
           ..add('autoArchiveQuote', autoArchiveQuote)
           ..add('autoEmailInvoice', autoEmailInvoice)
           ..add('autoConvertQuote', autoConvertQuote)
+          ..add(
+              'autoCreateOrderConfirmation', autoCreateOrderConfirmation)
           ..add('enableInclusiveTaxes', enableInclusiveTaxes)
           ..add('translations', translations)
           ..add('taskNumberPattern', taskNumberPattern)
@@ -4203,10 +4321,18 @@ class _$SettingsEntity extends SettingsEntity {
           ..add('defaultInvoiceTerms', defaultInvoiceTerms)
           ..add('defaultQuoteTerms', defaultQuoteTerms)
           ..add('defaultQuoteFooter', defaultQuoteFooter)
+          ..add(
+              'defaultOrderConfirmationTerms', defaultOrderConfirmationTerms)
+          ..add(
+              'defaultOrderConfirmationFooter', defaultOrderConfirmationFooter)
+          ..add('defaultOrderConfirmationPublicNotes',
+              defaultOrderConfirmationPublicNotes)
           ..add('defaultCreditTerms', defaultCreditTerms)
           ..add('defaultCreditFooter', defaultCreditFooter)
           ..add('defaultInvoiceDesignId', defaultInvoiceDesignId)
           ..add('defaultQuoteDesignId', defaultQuoteDesignId)
+          ..add('defaultOrderConfirmationDesignId',
+              defaultOrderConfirmationDesignId)
           ..add('defaultCreditDesignId', defaultCreditDesignId)
           ..add('defaultDeliveryNoteDesignId', defaultDeliveryNoteDesignId)
           ..add('defaultStatementDesignId', defaultStatementDesignId)
@@ -4224,11 +4350,14 @@ class _$SettingsEntity extends SettingsEntity {
           ..add('emailSignature', emailSignature)
           ..add('emailSubjectInvoice', emailSubjectInvoice)
           ..add('emailSubjectQuote', emailSubjectQuote)
+          ..add('emailSubjectOrderConfirmation',
+              emailSubjectOrderConfirmation)
           ..add('emailSubjectCredit', emailSubjectCredit)
           ..add('emailSubjectPayment', emailSubjectPayment)
           ..add('emailSubjectPaymentPartial', emailSubjectPaymentPartial)
           ..add('emailBodyInvoice', emailBodyInvoice)
           ..add('emailBodyQuote', emailBodyQuote)
+          ..add('emailBodyOrderConfirmation', emailBodyOrderConfirmation)
           ..add('emailBodyCredit', emailBodyCredit)
           ..add('emailBodyPayment', emailBodyPayment)
           ..add('emailBodyPaymentPartial', emailBodyPaymentPartial)
@@ -4571,6 +4700,11 @@ class SettingsEntityBuilder
   set autoConvertQuote(bool? autoConvertQuote) =>
       _$this._autoConvertQuote = autoConvertQuote;
 
+  bool? _autoCreateOrderConfirmation;
+  bool? get autoCreateOrderConfirmation => _$this._autoCreateOrderConfirmation;
+  set autoCreateOrderConfirmation(bool? autoCreateOrderConfirmation) =>
+      _$this._autoCreateOrderConfirmation = autoCreateOrderConfirmation;
+
   bool? _enableInclusiveTaxes;
   bool? get enableInclusiveTaxes => _$this._enableInclusiveTaxes;
   set enableInclusiveTaxes(bool? enableInclusiveTaxes) =>
@@ -4751,6 +4885,26 @@ class SettingsEntityBuilder
   set defaultQuoteFooter(String? defaultQuoteFooter) =>
       _$this._defaultQuoteFooter = defaultQuoteFooter;
 
+  String? _defaultOrderConfirmationTerms;
+  String? get defaultOrderConfirmationTerms =>
+      _$this._defaultOrderConfirmationTerms;
+  set defaultOrderConfirmationTerms(String? defaultOrderConfirmationTerms) =>
+      _$this._defaultOrderConfirmationTerms = defaultOrderConfirmationTerms;
+
+  String? _defaultOrderConfirmationFooter;
+  String? get defaultOrderConfirmationFooter =>
+      _$this._defaultOrderConfirmationFooter;
+  set defaultOrderConfirmationFooter(String? defaultOrderConfirmationFooter) =>
+      _$this._defaultOrderConfirmationFooter = defaultOrderConfirmationFooter;
+
+  String? _defaultOrderConfirmationPublicNotes;
+  String? get defaultOrderConfirmationPublicNotes =>
+      _$this._defaultOrderConfirmationPublicNotes;
+  set defaultOrderConfirmationPublicNotes(
+          String? defaultOrderConfirmationPublicNotes) =>
+      _$this._defaultOrderConfirmationPublicNotes =
+          defaultOrderConfirmationPublicNotes;
+
   String? _defaultCreditTerms;
   String? get defaultCreditTerms => _$this._defaultCreditTerms;
   set defaultCreditTerms(String? defaultCreditTerms) =>
@@ -4770,6 +4924,13 @@ class SettingsEntityBuilder
   String? get defaultQuoteDesignId => _$this._defaultQuoteDesignId;
   set defaultQuoteDesignId(String? defaultQuoteDesignId) =>
       _$this._defaultQuoteDesignId = defaultQuoteDesignId;
+
+  String? _defaultOrderConfirmationDesignId;
+  String? get defaultOrderConfirmationDesignId =>
+      _$this._defaultOrderConfirmationDesignId;
+  set defaultOrderConfirmationDesignId(String? defaultOrderConfirmationDesignId) =>
+      _$this._defaultOrderConfirmationDesignId =
+          defaultOrderConfirmationDesignId;
 
   String? _defaultCreditDesignId;
   String? get defaultCreditDesignId => _$this._defaultCreditDesignId;
@@ -4860,6 +5021,12 @@ class SettingsEntityBuilder
   set emailSubjectQuote(String? emailSubjectQuote) =>
       _$this._emailSubjectQuote = emailSubjectQuote;
 
+  String? _emailSubjectOrderConfirmation;
+  String? get emailSubjectOrderConfirmation =>
+      _$this._emailSubjectOrderConfirmation;
+  set emailSubjectOrderConfirmation(String? emailSubjectOrderConfirmation) =>
+      _$this._emailSubjectOrderConfirmation = emailSubjectOrderConfirmation;
+
   String? _emailSubjectCredit;
   String? get emailSubjectCredit => _$this._emailSubjectCredit;
   set emailSubjectCredit(String? emailSubjectCredit) =>
@@ -4884,6 +5051,12 @@ class SettingsEntityBuilder
   String? get emailBodyQuote => _$this._emailBodyQuote;
   set emailBodyQuote(String? emailBodyQuote) =>
       _$this._emailBodyQuote = emailBodyQuote;
+
+  String? _emailBodyOrderConfirmation;
+  String? get emailBodyOrderConfirmation =>
+      _$this._emailBodyOrderConfirmation;
+  set emailBodyOrderConfirmation(String? emailBodyOrderConfirmation) =>
+      _$this._emailBodyOrderConfirmation = emailBodyOrderConfirmation;
 
   String? _emailBodyCredit;
   String? get emailBodyCredit => _$this._emailBodyCredit;
@@ -5663,6 +5836,7 @@ class SettingsEntityBuilder
       _autoArchiveQuote = $v.autoArchiveQuote;
       _autoEmailInvoice = $v.autoEmailInvoice;
       _autoConvertQuote = $v.autoConvertQuote;
+      _autoCreateOrderConfirmation = $v.autoCreateOrderConfirmation;
       _enableInclusiveTaxes = $v.enableInclusiveTaxes;
       _translations = $v.translations?.toBuilder();
       _taskNumberPattern = $v.taskNumberPattern;
@@ -5698,10 +5872,15 @@ class SettingsEntityBuilder
       _defaultInvoiceTerms = $v.defaultInvoiceTerms;
       _defaultQuoteTerms = $v.defaultQuoteTerms;
       _defaultQuoteFooter = $v.defaultQuoteFooter;
+      _defaultOrderConfirmationTerms = $v.defaultOrderConfirmationTerms;
+      _defaultOrderConfirmationFooter = $v.defaultOrderConfirmationFooter;
+      _defaultOrderConfirmationPublicNotes =
+          $v.defaultOrderConfirmationPublicNotes;
       _defaultCreditTerms = $v.defaultCreditTerms;
       _defaultCreditFooter = $v.defaultCreditFooter;
       _defaultInvoiceDesignId = $v.defaultInvoiceDesignId;
       _defaultQuoteDesignId = $v.defaultQuoteDesignId;
+      _defaultOrderConfirmationDesignId = $v.defaultOrderConfirmationDesignId;
       _defaultCreditDesignId = $v.defaultCreditDesignId;
       _defaultDeliveryNoteDesignId = $v.defaultDeliveryNoteDesignId;
       _defaultStatementDesignId = $v.defaultStatementDesignId;
@@ -5719,11 +5898,13 @@ class SettingsEntityBuilder
       _emailSignature = $v.emailSignature;
       _emailSubjectInvoice = $v.emailSubjectInvoice;
       _emailSubjectQuote = $v.emailSubjectQuote;
+      _emailSubjectOrderConfirmation = $v.emailSubjectOrderConfirmation;
       _emailSubjectCredit = $v.emailSubjectCredit;
       _emailSubjectPayment = $v.emailSubjectPayment;
       _emailSubjectPaymentPartial = $v.emailSubjectPaymentPartial;
       _emailBodyInvoice = $v.emailBodyInvoice;
       _emailBodyQuote = $v.emailBodyQuote;
+      _emailBodyOrderConfirmation = $v.emailBodyOrderConfirmation;
       _emailBodyCredit = $v.emailBodyCredit;
       _emailBodyPayment = $v.emailBodyPayment;
       _emailBodyPaymentPartial = $v.emailBodyPaymentPartial;
@@ -5935,6 +6116,7 @@ class SettingsEntityBuilder
             autoArchiveQuote: autoArchiveQuote,
             autoEmailInvoice: autoEmailInvoice,
             autoConvertQuote: autoConvertQuote,
+            autoCreateOrderConfirmation: autoCreateOrderConfirmation,
             enableInclusiveTaxes: enableInclusiveTaxes,
             translations: _translations?.build(),
             taskNumberPattern: taskNumberPattern,
@@ -5970,10 +6152,16 @@ class SettingsEntityBuilder
             defaultInvoiceTerms: defaultInvoiceTerms,
             defaultQuoteTerms: defaultQuoteTerms,
             defaultQuoteFooter: defaultQuoteFooter,
+            defaultOrderConfirmationTerms: defaultOrderConfirmationTerms,
+            defaultOrderConfirmationFooter: defaultOrderConfirmationFooter,
+            defaultOrderConfirmationPublicNotes:
+                defaultOrderConfirmationPublicNotes,
             defaultCreditTerms: defaultCreditTerms,
             defaultCreditFooter: defaultCreditFooter,
             defaultInvoiceDesignId: defaultInvoiceDesignId,
             defaultQuoteDesignId: defaultQuoteDesignId,
+            defaultOrderConfirmationDesignId:
+                defaultOrderConfirmationDesignId,
             defaultCreditDesignId: defaultCreditDesignId,
             defaultDeliveryNoteDesignId: defaultDeliveryNoteDesignId,
             defaultStatementDesignId: defaultStatementDesignId,
@@ -5991,11 +6179,13 @@ class SettingsEntityBuilder
             emailSignature: emailSignature,
             emailSubjectInvoice: emailSubjectInvoice,
             emailSubjectQuote: emailSubjectQuote,
+            emailSubjectOrderConfirmation: emailSubjectOrderConfirmation,
             emailSubjectCredit: emailSubjectCredit,
             emailSubjectPayment: emailSubjectPayment,
             emailSubjectPaymentPartial: emailSubjectPaymentPartial,
             emailBodyInvoice: emailBodyInvoice,
             emailBodyQuote: emailBodyQuote,
+            emailBodyOrderConfirmation: emailBodyOrderConfirmation,
             emailBodyCredit: emailBodyCredit,
             emailBodyPayment: emailBodyPayment,
             emailBodyPaymentPartial: emailBodyPaymentPartial,

@@ -334,8 +334,22 @@ class _InvoiceDesignState extends State<InvoiceDesign>
                                   onChanged: (value) => setState(
                                     () => _updateAllQuoteDesigns = value,
                                   ),
-                                ),
+                                  ),
                               ),
+                          ],
+                          if (company.isModuleEnabled(EntityType.quote)) ...[
+                            DesignPicker(
+                              label:
+                                  localization.lookup('order_confirmation_design'),
+                              initialValue:
+                                  settings.defaultOrderConfirmationDesignId,
+                              onSelected: (value) {
+                                viewModel.onSettingsChanged(settings.rebuild(
+                                    (b) => b
+                                      ..defaultOrderConfirmationDesignId =
+                                          value!.id));
+                              },
+                            ),
                           ],
                           if (company.isModuleEnabled(EntityType.credit)) ...[
                             DesignPicker(

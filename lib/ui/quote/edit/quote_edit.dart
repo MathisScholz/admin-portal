@@ -89,11 +89,19 @@ class _QuoteEditState extends State<QuoteEdit>
     final prefState = state.prefState;
     final client = state.clientState.get(invoice.clientId);
     final isFullscreen = prefState.isEditorFullScreen(EntityType.invoice);
+    final title = invoice.isOrderConfirmation
+        ? localization.lookup(
+            invoice.isNew
+                ? 'new_order_confirmation'
+                : 'edit_order_confirmation')
+        : invoice.isNew
+            ? localization.newQuote
+            : localization.editQuote;
 
     return EditScaffold(
       isFullscreen: isFullscreen,
       entity: invoice,
-      title: invoice.isNew ? localization.newQuote : localization.editQuote,
+      title: title,
       onCancelPressed: (context) => viewModel.onCancelPressed!(context),
       onSavePressed: (context) => _onSavePressed(context),
       actions: invoice.getActions(

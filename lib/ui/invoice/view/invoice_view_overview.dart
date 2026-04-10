@@ -88,19 +88,22 @@ class InvoiceOverview extends StatelessWidget {
 
     final userCompany = state.userCompany;
     final color = colors[invoice.calculatedStatusId];
+    final amountLabel = invoice.isPurchaseOrder
+        ? localization.amount
+        : invoice.isCredit
+            ? localization.creditAmount
+            : invoice.isOrderConfirmation
+                ? localization.lookup('order_confirmation_amount')
+                : invoice.isQuote
+                    ? localization.quoteAmount
+                    : localization.invoiceAmount;
 
     final widgets = <Widget>[
       EntityHeader(
         entity: invoice,
         statusColor: color,
         statusLabel: localization.lookup(statuses[invoice.calculatedStatusId]),
-        label: invoice.isPurchaseOrder
-            ? localization.amount
-            : invoice.isCredit
-                ? localization.creditAmount
-                : invoice.isQuote
-                    ? localization.quoteAmount
-                    : localization.invoiceAmount,
+        label: amountLabel,
         value: formatNumber(
           invoice.amount,
           context,

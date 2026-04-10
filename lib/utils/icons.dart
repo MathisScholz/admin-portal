@@ -62,6 +62,7 @@ IconData? getEntityActionIcon(EntityAction? entityAction) {
     case EntityAction.convertToExpense:
     case EntityAction.convertToProject:
     case EntityAction.convertToPayment:
+    case EntityAction.createOrderConfirmation:
       return Icons.content_copy;
     case EntityAction.approve:
     case EntityAction.accept:

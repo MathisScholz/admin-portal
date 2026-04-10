@@ -204,6 +204,10 @@ class _TemplatesAndRemindersState extends State<TemplatesAndReminders>
       settings = settings.rebuild((b) => b
         ..emailBodyQuote = body
         ..emailSubjectQuote = subject);
+    } else if (_selectedTemplate == EmailTemplate.order_confirmation) {
+      settings = settings.rebuild((b) => b
+        ..emailBodyOrderConfirmation = body
+        ..emailSubjectOrderConfirmation = subject);
     } else if (_selectedTemplate == EmailTemplate.credit) {
       settings = settings.rebuild((b) => b
         ..emailBodyCredit = body
@@ -383,6 +387,7 @@ class _TemplatesAndRemindersState extends State<TemplatesAndReminders>
                       return false;
                     } else if ([
                           EmailTemplate.quote,
+                          EmailTemplate.order_confirmation,
                           EmailTemplate.quote_reminder1,
                         ].contains(value) &&
                         !company.isModuleEnabled(EntityType.quote)) {
@@ -403,6 +408,8 @@ class _TemplatesAndRemindersState extends State<TemplatesAndReminders>
                       name = localization.secondReminder;
                     } else if (item == EmailTemplate.reminder3) {
                       name = localization.thirdReminder;
+                    } else if (item == EmailTemplate.order_confirmation) {
+                      name = localization.lookup('order_confirmation_email');
                     } else if (item == EmailTemplate.custom1) {
                       name = localization.firstCustom;
                     } else if (item == EmailTemplate.custom2) {
@@ -565,7 +572,10 @@ class _TemplatesAndRemindersState extends State<TemplatesAndReminders>
                 ),
               ),
               VariablesHelp(
-                showInvoiceAsQuote: template == EmailTemplate.quote,
+                showInvoiceAsQuote: [
+                  EmailTemplate.quote,
+                  EmailTemplate.order_confirmation,
+                ].contains(template),
                 showInvoiceAsInvoices: [
                   EmailTemplate.payment,
                   EmailTemplate.payment_partial,

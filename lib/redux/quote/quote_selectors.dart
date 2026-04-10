@@ -12,6 +12,10 @@ ClientEntity? quoteClientSelector(
   return clientMap[quote.clientId];
 }
 
+bool isRegularQuote(InvoiceEntity quote) => !quote.isOrderConfirmation;
+
+bool isOrderConfirmationQuote(InvoiceEntity quote) => quote.isOrderConfirmation;
+
 ClientContactEntity? quoteContactSelector(
     InvoiceEntity quote, ClientEntity client) {
   var contactIds = quote.invitations
@@ -54,6 +58,9 @@ List<String> dropdownQuoteSelector(
 ) {
   final list = quoteList.where((invoiceId) {
     final invoice = quoteMap[invoiceId];
+    if (invoice == null || invoice.isOrderConfirmation) {
+      return false;
+    }
     if (excludedIds.contains(invoiceId)) {
       return false;
     }
@@ -93,7 +100,17 @@ var memoizedFilteredQuoteList = memo7((SelectionState selectionState,
         ListUIState quoteListState,
         BuiltMap<String, UserEntity> userMap) =>
     filteredQuotesSelector(selectionState, quoteMap, quoteList, clientMap,
-        vendorMap, quoteListState, userMap));
+        vendorMap, quoteListState, userMap, isRegularQuote));
+
+var memoizedFilteredOrderConfirmationList = memo7((SelectionState selectionState,
+        BuiltMap<String, InvoiceEntity> quoteMap,
+        BuiltList<String> quoteList,
+        BuiltMap<String, ClientEntity> clientMap,
+        BuiltMap<String, VendorEntity> vendorMap,
+        ListUIState quoteListState,
+        BuiltMap<String, UserEntity> userMap) =>
+    filteredQuotesSelector(selectionState, quoteMap, quoteList, clientMap,
+        vendorMap, quoteListState, userMap, isOrderConfirmationQuote));
 
 List<String> filteredQuotesSelector(
     SelectionState selectionState,
@@ -102,12 +119,16 @@ List<String> filteredQuotesSelector(
     BuiltMap<String, ClientEntity> clientMap,
     BuiltMap<String, VendorEntity> vendorMap,
     ListUIState quoteListState,
-    BuiltMap<String, UserEntity> userMap) {
+    BuiltMap<String, UserEntity> userMap,
+    bool Function(InvoiceEntity quote) matchesDocumentType) {
   final filterEntityId = selectionState.filterEntityId;
   final filterEntityType = selectionState.filterEntityType;
 
   final list = quoteList.where((quoteId) {
     final quote = quoteMap[quoteId]!;
+    if (!matchesDocumentType(quote)) {
+      return false;
+    }
     final client =
         clientMap[quote.clientId] ?? ClientEntity(id: quote.clientId);
 
@@ -189,7 +210,7 @@ EntityStats quoteStatsForClient(
   int countArchived = 0;
 
   quoteMap.forEach((quoteId, quote) {
-    if (quote.clientId == clientId) {
+    if (quote.clientId == clientId && !quote.isOrderConfirmation) {
       if (quote.isActive) {
         countActive++;
       } else if (quote.isArchived) {
@@ -210,7 +231,7 @@ EntityStats quoteStatsForDesign(
   int countActive = 0;
   int countArchived = 0;
   quoteMap.forEach((quoteId, quote) {
-    if (quote.designId == designId) {
+    if (quote.designId == designId && !quote.isOrderConfirmation) {
       if (quote.isActive) {
         countActive++;
       } else if (quote.isArchived) {
@@ -233,7 +254,7 @@ EntityStats quoteStatsForUser(
   int countActive = 0;
   int countArchived = 0;
   quoteMap.forEach((quoteId, quote) {
-    if (quote.assignedUserId == userId) {
+    if (quote.assignedUserId == userId && !quote.isOrderConfirmation) {
       if (quote.isActive) {
         countActive++;
       } else if (quote.isArchived) {

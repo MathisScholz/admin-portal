@@ -163,6 +163,17 @@ class _WorkflowSettingsState extends State<WorkflowSettings>
                   isLast: true,
                   children: <Widget>[
                     BoolDropdownButton(
+                      label:
+                          localization.lookup('auto_create_order_confirmation'),
+                      helpLabel: localization.lookup(
+                          'auto_create_order_confirmation_help'),
+                      value: settings.autoCreateOrderConfirmation,
+                      onChanged: (value) => viewModel.onSettingsChanged(
+                          settings.rebuild(
+                              (b) => b..autoCreateOrderConfirmation = value)),
+                      iconData: Icons.description_outlined,
+                    ),
+                    BoolDropdownButton(
                       label: localization.autoConvertQuote,
                       helpLabel: localization.autoConvertQuoteHelp,
                       value: settings.autoConvertQuote,

@@ -126,6 +126,8 @@ class EntityAction extends EnumClass {
   static const EntityAction convertToPayment = _$convertToPayment;
   static const EntityAction convertToInvoice = _$convertToInvoice;
   static const EntityAction convertToProject = _$convertToProject;
+  static const EntityAction createOrderConfirmation =
+      _$createOrderConfirmation;
   static const EntityAction merge = _$merge;
   static const EntityAction bulkPrint = _$bulkPrint;
   static const EntityAction autoBill = _$autoBill;

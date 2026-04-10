@@ -240,6 +240,8 @@ final BuiltSet<EntityState> _$values =
 
 const EmailTemplate _$invoice_email = const EmailTemplate._('invoice');
 const EmailTemplate _$quote_email = const EmailTemplate._('quote');
+const EmailTemplate _$order_confirmation_email =
+    const EmailTemplate._('order_confirmation');
 const EmailTemplate _$payment_email = const EmailTemplate._('payment');
 const EmailTemplate _$payment_partial_email =
     const EmailTemplate._('payment_partial');
@@ -265,6 +267,8 @@ EmailTemplate _$templateValueOf(String name) {
       return _$invoice_email;
     case 'quote':
       return _$quote_email;
+    case 'order_confirmation':
+      return _$order_confirmation_email;
     case 'payment':
       return _$payment_email;
     case 'payment_partial':
@@ -302,6 +306,7 @@ final BuiltSet<EmailTemplate> _$templateValues =
     BuiltSet<EmailTemplate>(const <EmailTemplate>[
   _$invoice_email,
   _$quote_email,
+  _$order_confirmation_email,
   _$payment_email,
   _$payment_partial_email,
   _$payment_failed_email,

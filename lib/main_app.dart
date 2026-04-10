@@ -571,6 +571,16 @@ class InvoiceNinjaAppState extends State<InvoiceNinjaApp> {
                           QuoteEmailScreen.route: (context) =>
                               QuoteEmailScreen(),
                           QuotePdfScreen.route: (context) => QuotePdfScreen(),
+                          OrderConfirmationScreen.route: (context) =>
+                              OrderConfirmationScreenBuilder(),
+                          OrderConfirmationEmailScreen.route: (context) =>
+                              OrderConfirmationEmailScreen(),
+                          OrderConfirmationPdfScreen.route: (context) =>
+                              OrderConfirmationPdfScreen(),
+                          OrderConfirmationViewScreen.route: (context) =>
+                              OrderConfirmationViewScreen(),
+                          OrderConfirmationEditScreen.route: (context) =>
+                              OrderConfirmationEditScreen(),
                           // STARTER: routes - do not remove comment
                           ScheduleScreen.route: (context) =>
                               ScheduleScreenBuilder(),

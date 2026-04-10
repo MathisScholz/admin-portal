@@ -90,7 +90,9 @@ class _InvoiceEmailViewState extends State<InvoiceEmailView>
           selectedTemplate = EmailTemplate.invoice;
         break;
       case EntityType.quote:
-        if (invoice.lastSentDate.isNotEmpty)
+        if (invoice.isOrderConfirmation)
+          selectedTemplate = EmailTemplate.order_confirmation;
+        else if (invoice.lastSentDate.isNotEmpty)
           selectedTemplate = EmailTemplate.quote_reminder1;
         else
           selectedTemplate = EmailTemplate.quote;
@@ -250,7 +252,12 @@ class _InvoiceEmailViewState extends State<InvoiceEmailView>
                         child: Text(localization.endlessReminder),
                         value: EmailTemplate.reminder_endless,
                       ),
-                    ] else if (invoice.isQuote) ...[
+                    ] else if (invoice.isQuote && !invoice.isOrderConfirmation) ...[
+                      DropdownMenuItem<EmailTemplate>(
+                        child: Text(
+                            localization.lookup('order_confirmation_email')),
+                        value: EmailTemplate.order_confirmation,
+                      ),
                       DropdownMenuItem<EmailTemplate>(
                         child: Text(localization.firstReminder),
                         value: EmailTemplate.quote_reminder1,

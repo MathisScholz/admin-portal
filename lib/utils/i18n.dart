@@ -1895,6 +1895,16 @@ mixin LocalizationsProvider on LocaleCodeAware {
       'payment_partial': 'Partial Payment',
       'partial_payment_email': 'Partial Payment Email',
       'quote_email': 'Quote Email',
+      'order_confirmation_email': 'Order Confirmation Email',
+      'order_confirmation': 'Order Confirmation',
+      'order_confirmations': 'Order Confirmations',
+      'order_confirmation_amount': 'Order Confirmation Amount',
+      'new_order_confirmation': 'New Order Confirmation',
+      'edit_order_confirmation': 'Edit Order Confirmation',
+      'created_order_confirmation': 'Successfully created order confirmation',
+      'updated_order_confirmation': 'Successfully updated order confirmation',
+      'emailed_order_confirmation':
+          'Successfully queued order confirmation to be sent',
       'endless_reminder': 'Endless Reminder',
       'filtered_by_user': 'Filtered by User',
       'administrator': 'Administrator',
@@ -1939,6 +1949,11 @@ mixin LocalizationsProvider on LocaleCodeAware {
       'invoice_footer': 'Invoice Footer',
       'quote_terms': 'Quote Terms',
       'quote_footer': 'Quote Footer',
+      'order_confirmation_design': 'Order Confirmation Design',
+      'order_confirmation_terms': 'Order Confirmation Terms',
+      'order_confirmation_footer': 'Order Confirmation Footer',
+      'order_confirmation_public_notes': 'Order Confirmation Introduction',
+      'create_order_confirmation': 'Create Order Confirmation',
       'auto_email_invoice': 'Auto Email',
       'auto_email_invoice_help':
           'Automatically email recurring invoices when they are created.',
@@ -1948,6 +1963,9 @@ mixin LocalizationsProvider on LocaleCodeAware {
       'auto_convert_quote': 'Auto Convert',
       'auto_convert_quote_help':
           'Automatically convert a quote to an invoice when approved by a client.',
+      'auto_create_order_confirmation': 'Auto Create Order Confirmation',
+      'auto_create_order_confirmation_help':
+          'Automatically create an order confirmation when a quote is approved by a client.',
       'workflow_settings': 'Workflow Settings',
       'freq_daily': 'Daily',
       'freq_weekly': 'Weekly',
@@ -43175,6 +43193,18 @@ mixin LocalizationsProvider on LocaleCodeAware {
       'payment_partial': 'Teilzahlung',
       'partial_payment_email': 'Teilzahlungsmail',
       'quote_email': 'Angebotsmail',
+      'order_confirmation_email': 'Auftragsbestätigungs-Mail',
+      'order_confirmation': 'Auftragsbestätigung',
+      'order_confirmations': 'Auftragsbestätigungen',
+      'order_confirmation_amount': 'Auftragsbestätigungsbetrag',
+      'new_order_confirmation': 'Neue Auftragsbestätigung',
+      'edit_order_confirmation': 'Auftragsbestätigung bearbeiten',
+      'created_order_confirmation':
+          'Auftragsbestätigung erfolgreich erstellt',
+      'updated_order_confirmation':
+          'Auftragsbestätigung erfolgreich aktualisiert',
+      'emailed_order_confirmation':
+          'Auftragsbestätigung erfolgreich zum Versand vorgemerkt',
       'endless_reminder': 'Endlose Erinnnerung',
       'filtered_by_user': 'Gefiltert nach Benutzer',
       'administrator': 'Administrator',
@@ -43220,6 +43250,11 @@ mixin LocalizationsProvider on LocaleCodeAware {
       'invoice_footer': 'Rechnungsfußzeile',
       'quote_terms': 'Angebotsbedingungen',
       'quote_footer': 'Angebots-Fußzeile',
+      'order_confirmation_design': 'Auftragsbestätigungs-Layout',
+      'order_confirmation_terms': 'Auftragsbestätigungsbedingungen',
+      'order_confirmation_footer': 'Auftragsbestätigungs-Fußzeile',
+      'order_confirmation_public_notes': 'Einleitung Auftragsbestätigung',
+      'create_order_confirmation': 'Auftragsbestätigung erstellen',
       'auto_email_invoice': 'Automatischer E-Mail-Versand',
       'auto_email_invoice_help':
           'Senden Sie automatisch wiederkehrende Rechnungen per E-Mail, wenn sie erstellt wurden.',
@@ -43229,6 +43264,10 @@ mixin LocalizationsProvider on LocaleCodeAware {
       'auto_convert_quote': 'Automatisch konvertieren',
       'auto_convert_quote_help':
           'Wandeln Sie ein Angebot automatisch in eine Rechnung um, wenn es angenommen wurde.',
+      'auto_create_order_confirmation':
+          'Auftragsbestätigung automatisch erstellen',
+      'auto_create_order_confirmation_help':
+          'Erstellen Sie automatisch eine Auftragsbestätigung, wenn ein Angebot angenommen wurde.',
       'workflow_settings': 'Workflow-Einstellungen',
       'freq_daily': 'Täglich',
       'freq_weekly': 'Wöchentlich',

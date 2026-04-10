@@ -298,6 +298,7 @@ class EmailTemplate extends EnumClass {
 
   static const EmailTemplate invoice = _$invoice_email;
   static const EmailTemplate quote = _$quote_email;
+  static const EmailTemplate order_confirmation = _$order_confirmation_email;
   static const EmailTemplate payment = _$payment_email;
   static const EmailTemplate payment_partial = _$payment_partial_email;
   static const EmailTemplate payment_failed = _$payment_failed_email;
